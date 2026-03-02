@@ -1,0 +1,138 @@
+version: '3.9'
+
+services:
+  # MongoDB
+  mongodb:
+    image: mongo:7.0
+    container_name: skillswap-mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: skillswap
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-skillswap123}
+      MONGO_INITDB_DATABASE: skillswap
+    volumes:
+      - mongo_data:/data/db
+    networks: [skillswap-net]
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    container_name: skillswap-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: skillswap_credits
+      POSTGRES_USER: skillswap
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-skillswap123}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/migrations/001_credit_ledger.sql:/docker-entrypoint-initdb.d/001_credit_ledger.sql
+    networks: [skillswap-net]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U skillswap -d skillswap_credits"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis
+  redis:
+    image: redis:7-alpine
+    container_name: skillswap-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-redis123}
+    volumes:
+      - redis_data:/data
+    networks: [skillswap-net]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: skillswap-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      MONGODB_URI: mongodb://skillswap:${MONGO_PASSWORD:-skillswap123}@mongodb:27017/skillswap?authSource=admin
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: skillswap_credits
+      POSTGRES_USER: skillswap
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-skillswap123}
+      REDIS_URL: redis://:${REDIS_PASSWORD:-redis123}@redis:6379
+      JWT_SECRET: ${JWT_SECRET:-change-this-in-production-super-secret}
+      JWT_EXPIRES_IN: 15m
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-change-refresh-secret-too}
+      JWT_REFRESH_EXPIRES_IN: 7d
+      CLIENT_URL: ${CLIENT_URL:-http://localhost}
+      SMTP_HOST: ${SMTP_HOST:-smtp.gmail.com}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASS: ${SMTP_PASS}
+      FROM_EMAIL: ${FROM_EMAIL:-noreply@skillswap.io}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: ${AWS_REGION:-us-east-1}
+      S3_BUCKET_NAME: ${S3_BUCKET_NAME}
+      SIGNUP_BONUS_CREDITS: 10
+    volumes:
+      - ./backend/logs:/app/logs
+      - ./backend/uploads:/app/uploads
+    depends_on:
+      mongodb: { condition: service_healthy }
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    networks: [skillswap-net]
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: /api
+    container_name: skillswap-frontend
+    restart: unless-stopped
+    networks: [skillswap-net]
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: skillswap-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - nginx_logs:/var/log/nginx
+    depends_on:
+      - backend
+      - frontend
+    networks: [skillswap-net]
+
+volumes:
+  mongo_data:
+  postgres_data:
+  redis_data:
+  nginx_logs:
+
+networks:
+  skillswap-net:
+    driver: bridge

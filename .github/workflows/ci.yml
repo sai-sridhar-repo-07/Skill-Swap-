@@ -1,0 +1,133 @@
+name: SkillSwap CI/CD
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  NODE_VERSION: '18'
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  # ─── Backend Tests ────────────────────────────────────────
+  test-backend:
+    name: Backend Tests
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:7.0
+        env:
+          MONGO_INITDB_DATABASE: skillswap_test
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval \"db.adminCommand('ping')\""
+          --health-interval 10s --health-timeout 5s --health-retries 5
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: skillswap_test
+          POSTGRES_USER: skillswap
+          POSTGRES_PASSWORD: testpass
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ env.NODE_VERSION }}', cache: 'npm', cache-dependency-path: backend/package-lock.json }
+      - run: npm ci
+        working-directory: backend
+      - name: Run tests
+        working-directory: backend
+        env:
+          NODE_ENV: test
+          MONGODB_URI: mongodb://localhost:27017/skillswap_test
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+          POSTGRES_DB: skillswap_test
+          POSTGRES_USER: skillswap
+          POSTGRES_PASSWORD: testpass
+          JWT_SECRET: test-secret
+          JWT_REFRESH_SECRET: test-refresh
+        run: npm test -- --coverage --forceExit
+
+  # ─── Frontend Tests ───────────────────────────────────────
+  test-frontend:
+    name: Frontend Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ env.NODE_VERSION }}', cache: 'npm', cache-dependency-path: frontend/package-lock.json }
+      - run: npm ci
+        working-directory: frontend
+      - run: npm test -- --run
+        working-directory: frontend
+
+  # ─── Build & Push Docker ──────────────────────────────────
+  build-push:
+    name: Build & Push Images
+    runs-on: ubuntu-latest
+    needs: [test-backend, test-frontend]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build & push backend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build & push frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # ─── Deploy ───────────────────────────────────────────────
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: build-push
+    if: github.ref == 'refs/heads/main'
+    environment: production
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /opt/skillswap
+            git pull origin main
+            docker compose pull
+            docker compose up -d --remove-orphans
+            docker image prune -f
+            echo "✅ Deployment complete at $(date)"

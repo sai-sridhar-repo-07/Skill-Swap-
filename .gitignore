@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Build
+dist/
+build/
+.next/
+
+# Env files
+.env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+*.override.yml
+
+# Coverage
+coverage/
+.nyc_output/
+
+# IDE
+.idea/
+.vscode/
+.claude/
+*.suo
+*.swp
+
+# Runtime
+*.pid
+uploads/
+backend/uploads/
+
+# SSL certificates
+nginx/ssl/*.pem
+nginx/ssl/*.key
+nginx/ssl/*.crt
