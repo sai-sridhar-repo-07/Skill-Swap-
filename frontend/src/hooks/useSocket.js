@@ -15,7 +15,8 @@ export const useSocket = () => {
     if (!isAuthenticated || !accessToken || initialized.current) return
     initialized.current = true
 
-    socketInstance = io(window.location.origin, {
+    const serverUrl = import.meta.env.VITE_API_URL || window.location.origin
+    socketInstance = io(serverUrl, {
       auth: { token: accessToken },
       reconnectionAttempts: 5,
       reconnectionDelay: 2000,

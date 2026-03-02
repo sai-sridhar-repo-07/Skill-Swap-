@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: skillswap-api
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node src/app.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5001
+      # Set these in Render dashboard → Environment:
+      # MONGODB_URI, POSTGRES_HOST, POSTGRES_PORT, POSTGRES_DB,
+      # POSTGRES_USER, POSTGRES_PASSWORD, REDIS_URL,
+      # JWT_SECRET, JWT_REFRESH_SECRET,
+      # CLIENT_URL  ← set to your Netlify URL e.g. https://skillswap.netlify.app
