@@ -85,16 +85,16 @@ export default function Home() {
         <motion.div className="absolute inset-0 pointer-events-none" style={{ y: heroY, opacity: heroOpacity }}>
           <motion.div animate={{ scale: [1, 1.15, 1], rotate: [0, 10, 0] }} transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
             className="absolute top-1/4 left-1/5 w-[500px] h-[500px] rounded-full opacity-20 blur-3xl"
-            style={{ background: 'radial-gradient(circle, #FF6B00, transparent 70%)' }} />
+            style={{ background: 'radial-gradient(circle, #FF9933, transparent 70%)' }} />
           <motion.div animate={{ scale: [1.1, 1, 1.1], rotate: [0, -8, 0] }} transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
             className="absolute top-1/3 right-1/4 w-[400px] h-[400px] rounded-full opacity-20 blur-3xl"
-            style={{ background: 'radial-gradient(circle, #FF6B00, transparent 70%)' }} />
+            style={{ background: 'radial-gradient(circle, #FF9933, transparent 70%)' }} />
           <motion.div animate={{ scale: [1, 1.2, 1], x: [0, 30, 0] }} transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
             className="absolute bottom-1/3 left-1/3 w-[350px] h-[350px] rounded-full opacity-15 blur-3xl"
-            style={{ background: 'radial-gradient(circle, #FF6B00, transparent 70%)' }} />
+            style={{ background: 'radial-gradient(circle, #FF9933, transparent 70%)' }} />
           <motion.div animate={{ scale: [1.05, 1, 1.05] }} transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
             className="absolute top-1/2 right-1/3 w-[300px] h-[300px] rounded-full opacity-15 blur-3xl"
-            style={{ background: 'radial-gradient(circle, #FFAD5C, transparent 70%)' }} />
+            style={{ background: 'radial-gradient(circle, #FFB347, transparent 70%)' }} />
           {/* Grid dots */}
           <div className="absolute inset-0 bg-grid-dark opacity-60" />
         </motion.div>
@@ -201,7 +201,7 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-6 relative">
             {/* Connecting line */}
             <div className="absolute top-12 left-1/4 right-1/4 h-px hidden md:block"
-              style={{ background: 'linear-gradient(90deg, #E65C00, #FF6B00, #FF8C00)' }} />
+              style={{ background: 'linear-gradient(90deg, #E67E00, #FF9933, #FF9933)' }} />
             {[
               { step: '01', emoji: '🔍', title: 'Browse & Book', desc: 'Find sessions by skill, level, or rating. Book instantly with credits.', color: 'neon-border-fire', pill: 'pill-fire' },
               { step: '02', emoji: '🎥', title: 'Join Live Room', desc: 'Enter the WebRTC video room. Chat, whiteboard, screen share.', color: 'neon-border-lime', pill: 'pill-lime' },
@@ -226,7 +226,7 @@ export default function Home() {
       {/* ── FEATURES GRID ────────────────────────────── */}
       <section className="py-20 px-4 relative overflow-hidden" style={{ background: 'rgba(255,255,255,0.01)' }}>
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 80% 50% at 50% 50%, rgba(255,107,0,0.05), transparent)' }} />
+          <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 80% 50% at 50% 50%, rgba(255,153,51,0.05), transparent)' }} />
         </div>
         <div className="max-w-6xl mx-auto relative">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger} className="text-center mb-14">
@@ -294,7 +294,7 @@ export default function Home() {
             {/* Credit packs */}
             <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
               className="rounded-2xl p-6 space-y-4"
-              style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,107,0,0.2)' }}>
+              style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,153,51,0.2)' }}>
               <div className="flex items-center gap-2 mb-2">
                 <Zap size={18} className="text-orange-400" />
                 <h3 className="font-bold text-white">Credit Packs</h3>
@@ -302,10 +302,10 @@ export default function Home() {
               <div className="grid grid-cols-2 gap-3">
                 {PRICING_PACKS.map((pack) => (
                   <motion.div key={pack.credits} whileHover={{ scale: 1.03 }} className="relative p-3 rounded-xl"
-                    style={{ background: pack.highlight ? 'rgba(255,107,0,0.12)' : 'rgba(255,255,255,0.04)', border: `1px solid ${pack.highlight ? 'rgba(255,107,0,0.4)' : 'rgba(255,255,255,0.08)'}` }}>
+                    style={{ background: pack.highlight ? 'rgba(255,153,51,0.12)' : 'rgba(255,255,255,0.04)', border: `1px solid ${pack.highlight ? 'rgba(255,153,51,0.4)' : 'rgba(255,255,255,0.08)'}` }}>
                     {pack.highlight && (
                       <span className="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full text-[9px] font-bold text-white"
-                        style={{ background: 'linear-gradient(135deg, #CC5200, #FF8C00)' }}>
+                        style={{ background: 'linear-gradient(135deg, #CC6A00, #FF9933)' }}>
                         ★ Best
                       </span>
                     )}
@@ -318,7 +318,7 @@ export default function Home() {
               </div>
               <button onClick={() => setShowTopup(true)}
                 className="w-full py-2.5 rounded-xl text-sm font-bold text-white mt-2 transition-all hover:opacity-90"
-                style={{ background: 'linear-gradient(135deg, #CC5200, #FF8C00)' }}>
+                style={{ background: 'linear-gradient(135deg, #CC6A00, #FF9933)' }}>
                 Buy Credits
               </button>
             </motion.div>
@@ -363,7 +363,7 @@ export default function Home() {
               className="relative rounded-3xl overflow-hidden text-center p-16">
               {/* Animated gradient background */}
               <div className="absolute inset-0 -z-10"
-                style={{ background: 'linear-gradient(135deg, rgba(255,107,0,0.15), rgba(255,173,92,0.1), rgba(255,107,0,0.1), rgba(255,107,0,0.15))', backgroundSize: '400% 400%', animation: 'gradientShift 6s ease infinite' }} />
+                style={{ background: 'linear-gradient(135deg, rgba(255,153,51,0.15), rgba(255,179,71,0.1), rgba(255,153,51,0.1), rgba(255,153,51,0.15))', backgroundSize: '400% 400%', animation: 'gradientShift 6s ease infinite' }} />
               <div className="absolute inset-0 -z-10 glass" />
               {/* Floating emojis */}
               {['🚀','⚡','🎓','💡','🔥','✨'].map((e, i) => (
@@ -387,7 +387,7 @@ export default function Home() {
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg flex items-center justify-center font-black text-sm text-white"
-              style={{ background: 'linear-gradient(135deg, #CC5200, #FF8C00)' }}>S</div>
+              style={{ background: 'linear-gradient(135deg, #CC6A00, #FF9933)' }}>S</div>
             <span className="font-bold text-white">SkillSwap</span>
           </div>
           <p className="text-white/25 text-xs">© 2026 SkillSwap · Built for learners everywhere 🌍</p>

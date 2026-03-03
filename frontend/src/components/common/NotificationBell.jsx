@@ -51,7 +51,7 @@ export default function NotificationBell() {
             className="absolute right-0 top-full mt-2 w-80 rounded-2xl shadow-2xl overflow-hidden z-50"
             style={{ background: 'rgba(16,16,24,0.97)', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(20px)' }}>
             {/* Top accent */}
-            <div className="absolute top-0 inset-x-0 h-px" style={{ background: 'linear-gradient(90deg, #E65C00, #FF6B00, #FF8C00)' }} />
+            <div className="absolute top-0 inset-x-0 h-px" style={{ background: 'linear-gradient(90deg, #E65C00, #FF9933, #FF8C00)' }} />
             <div className="flex items-center justify-between px-4 py-3 border-b border-white/8">
               <h3 className="font-bold text-white text-sm flex items-center gap-2">
                 <Bell size={14} className="text-coral-400" /> Notifications

@@ -12,7 +12,7 @@ export default function StarRating({ rating = 0, max = 5, onChange, size = 'sm' 
             size={sz}
             className={cn(
               'transition-all duration-150',
-              i < Math.round(rating) ? 'fill-orange-400 text-orange-400 drop-shadow-[0_0_4px_rgba(255,107,0,0.7)]' : 'text-white/15',
+              i < Math.round(rating) ? 'fill-orange-400 text-orange-400 drop-shadow-[0_0_4px_rgba(255,153,51,0.7)]' : 'text-white/15',
               onChange && 'cursor-pointer hover:text-orange-300'
             )}
             onClick={() => onChange?.(i + 1)}

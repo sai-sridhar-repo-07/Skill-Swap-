@@ -29,7 +29,7 @@ function SkillBar({ name, level, index }) {
           animate={inView ? { width: `${pct}%` } : {}}
           transition={{ duration: 0.8, delay: index * 0.08, ease: 'easeOut' }}
           className="h-full rounded-full"
-          style={{ background: 'linear-gradient(90deg, #CC5200, #FF8C00)' }}
+          style={{ background: 'linear-gradient(90deg, #CC6A00, #FF9933)' }}
         />
       </div>
       <span className="text-[10px] text-white/35 w-20 shrink-0">{level}</span>
@@ -57,7 +57,7 @@ function SentimentBar({ reviews }) {
               transition={{ duration: 0.7, ease: 'easeOut' }}
               viewport={{ once: true }}
               className="h-full rounded-full"
-              style={{ background: 'linear-gradient(90deg, #FF6B00, #FFB347)' }}
+              style={{ background: 'linear-gradient(90deg, #FF9933, #FFB347)' }}
             />
           </div>
           <span className="text-white/25 w-4 text-right">{count}</span>
@@ -132,10 +132,10 @@ export default function Profile() {
           className="card" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
           {/* Animated gradient banner with orbs */}
           <div className="h-24 rounded-xl mb-4 relative overflow-hidden"
-            style={{ background: 'linear-gradient(135deg, rgba(255,107,0,0.2), rgba(57,73,171,0.15), rgba(255,173,92,0.1))' }}>
+            style={{ background: 'linear-gradient(135deg, rgba(255,153,51,0.2), rgba(57,73,171,0.15), rgba(255,179,71,0.1))' }}>
             <motion.div animate={{ scale: [1, 1.3, 1], x: [0, 20, 0] }} transition={{ duration: 7, repeat: Infinity }}
               className="absolute top-2 left-8 w-20 h-20 rounded-full blur-2xl opacity-50"
-              style={{ background: '#FF6B00' }} />
+              style={{ background: '#FF9933' }} />
             <motion.div animate={{ scale: [1.2, 1, 1.2], x: [0, -15, 0] }} transition={{ duration: 9, repeat: Infinity, delay: 2 }}
               className="absolute bottom-0 right-16 w-16 h-16 rounded-full blur-2xl opacity-40"
               style={{ background: '#3949AB' }} />
@@ -173,7 +173,7 @@ export default function Profile() {
         {/* Skills I Teach */}
         {user.skillsOffered?.length > 0 && (
           <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-            className="card space-y-4" style={{ border: '1px solid rgba(255,107,0,0.15)' }}>
+            className="card space-y-4" style={{ border: '1px solid rgba(255,153,51,0.15)' }}>
             <h2 className="text-xs font-bold text-white/40 uppercase tracking-wider flex items-center gap-2">
               <BookOpen size={12} className="text-orange-300" /> Skills I Teach
             </h2>
@@ -188,7 +188,7 @@ export default function Profile() {
         {/* Skills Wanted */}
         {user.skillsWanted?.length > 0 && (
           <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
-            className="card space-y-3" style={{ border: '1px solid rgba(255,107,0,0.15)' }}>
+            className="card space-y-3" style={{ border: '1px solid rgba(255,153,51,0.15)' }}>
             <h2 className="text-xs font-bold text-white/40 uppercase tracking-wider flex items-center gap-2">
               <Star size={12} className="text-cyan-400" /> Wants to Learn
             </h2>

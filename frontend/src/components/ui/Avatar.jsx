@@ -11,11 +11,11 @@ const sizes = {
 // Indian flag — saffron + navy gradients, deterministic per name
 const GRADIENTS = [
   { from: '#CC5200', to: '#FF8C00' },  // deep saffron
-  { from: '#FF6B00', to: '#FFAD5C' },  // warm saffron
+  { from: '#FF9933', to: '#FFAD5C' },  // warm saffron
   { from: '#1a237e', to: '#3949ab' },  // Ashoka navy
   { from: '#E65C00', to: '#FF8C00' },  // saffron
   { from: '#283593', to: '#5c6bc0' },  // medium navy
-  { from: '#FF6B00', to: '#FFB347' },  // light saffron
+  { from: '#FF9933', to: '#FFB347' },  // light saffron
 ]
 const getGradient = (name) => GRADIENTS[(name?.charCodeAt(0) || 0) % GRADIENTS.length]
 

@@ -29,23 +29,23 @@ export default function ForgotPassword() {
       {/* Background orb */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full opacity-10 blur-3xl"
-          style={{ background: 'radial-gradient(circle, #FF6B00 0%, transparent 70%)' }} />
+          style={{ background: 'radial-gradient(circle, #FF9933 0%, transparent 70%)' }} />
       </div>
 
       <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-md relative">
         <div className="card !p-8 space-y-6 relative overflow-hidden"
-          style={{ border: '1px solid rgba(255,107,0,0.2)' }}>
+          style={{ border: '1px solid rgba(255,153,51,0.2)' }}>
           {/* Top accent */}
           <div className="absolute top-0 inset-x-0 h-0.5 rounded-full"
-            style={{ background: 'linear-gradient(90deg, #E65C00, #FF6B00, #FF8C00)' }} />
+            style={{ background: 'linear-gradient(90deg, #E65C00, #FF9933, #FF8C00)' }} />
 
           <div className="text-center">
             <motion.div
               animate={{ scale: [1, 1.05, 1] }} transition={{ duration: 2, repeat: Infinity }}
               className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
-              style={{ background: 'rgba(255,107,0,0.12)', border: '1px solid rgba(255,107,0,0.25)' }}>
-              <Mail size={28} className="text-coral-400" style={{ color: '#FF6B00' }} />
+              style={{ background: 'rgba(255,153,51,0.12)', border: '1px solid rgba(255,153,51,0.25)' }}>
+              <Mail size={28} className="text-coral-400" style={{ color: '#FF9933' }} />
             </motion.div>
             <h1 className="text-2xl font-black text-white">Reset password</h1>
             <p className="text-white/45 text-sm mt-1">We'll send you a reset link</p>

@@ -73,7 +73,7 @@ export default function EditProfile() {
       <div className="pt-16">
         {/* Header */}
         <div className="border-b border-white/5 py-10 px-4"
-          style={{ background: 'linear-gradient(180deg, rgba(255,107,0,0.05) 0%, transparent 100%)' }}>
+          style={{ background: 'linear-gradient(180deg, rgba(255,153,51,0.05) 0%, transparent 100%)' }}>
           <div className="max-w-2xl mx-auto">
             <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
               className="inline-flex items-center gap-2 pill-ocean mb-3">
@@ -129,7 +129,7 @@ export default function EditProfile() {
 
             {/* Skills I Teach */}
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
-              className="card space-y-4" style={{ border: '1px solid rgba(255,107,0,0.15)' }}>
+              className="card space-y-4" style={{ border: '1px solid rgba(255,153,51,0.15)' }}>
               <h2 className="text-xs font-bold text-white/40 uppercase tracking-wider">Skills I Can Teach</h2>
               <div className="flex flex-wrap gap-2 min-h-[2rem]">
                 <AnimatePresence>
@@ -154,7 +154,7 @@ export default function EditProfile() {
                 <motion.button type="button" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                   onClick={addSkillOffered}
                   className="px-3 py-2 rounded-xl text-sm font-semibold text-white flex items-center gap-1"
-                  style={{ background: 'rgba(255,107,0,0.15)', border: '1px solid rgba(255,107,0,0.3)' }}>
+                  style={{ background: 'rgba(255,153,51,0.15)', border: '1px solid rgba(255,153,51,0.3)' }}>
                   <Plus size={14} /> Add
                 </motion.button>
               </div>
@@ -162,7 +162,7 @@ export default function EditProfile() {
 
             {/* Skills Wanted */}
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-              className="card space-y-4" style={{ border: '1px solid rgba(255,107,0,0.15)' }}>
+              className="card space-y-4" style={{ border: '1px solid rgba(255,153,51,0.15)' }}>
               <h2 className="text-xs font-bold text-white/40 uppercase tracking-wider">Skills I Want to Learn</h2>
               <div className="flex flex-wrap gap-2 min-h-[2rem]">
                 <AnimatePresence>
@@ -183,7 +183,7 @@ export default function EditProfile() {
                 <motion.button type="button" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                   onClick={addSkillWanted}
                   className="px-3 py-2 rounded-xl text-sm font-semibold text-white flex items-center gap-1"
-                  style={{ background: 'rgba(255,107,0,0.12)', border: '1px solid rgba(255,107,0,0.25)' }}>
+                  style={{ background: 'rgba(255,153,51,0.12)', border: '1px solid rgba(255,153,51,0.25)' }}>
                   <Plus size={14} /> Add
                 </motion.button>
               </div>

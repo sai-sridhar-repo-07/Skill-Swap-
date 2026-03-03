@@ -49,7 +49,7 @@ export default function SessionRoom() {
 
   // Whiteboard
   const [drawing, setDrawing]     = useState(false)
-  const [drawColor, setDrawColor] = useState('#FF6B00')
+  const [drawColor, setDrawColor] = useState('#FF9933')
   const [drawSize]                = useState(3)
   const [tool, setTool]           = useState('pen')
   const canvasRef  = useRef()
@@ -569,7 +569,7 @@ export default function SessionRoom() {
                     className={`p-1.5 rounded-lg transition-colors ${tool === 'eraser' ? 'text-orange-400 bg-orange-500/10' : 'text-white/35 hover:text-white'}`}>
                     <Eraser size={13} />
                   </button>
-                  {['#FF6B00','#ffffff','#06b6d4','#a78bfa','#f59e0b','#10b981','#ef4444'].map((c) => (
+                  {['#FF9933','#ffffff','#06b6d4','#a78bfa','#f59e0b','#10b981','#ef4444'].map((c) => (
                     <button key={c} onClick={() => setDrawColor(c)} style={{ background: c }}
                       className={`w-4.5 h-4.5 rounded-full border-2 transition-all ${drawColor === c ? 'border-white scale-125' : 'border-transparent'}`}
                     />
@@ -623,7 +623,7 @@ function VideoTile({ videoRef, stream, name, isHost, audioMuted, videoOff, avata
       {/* Avatar fallback when camera is off */}
       {(isLocal ? videoOff : !stream) && (
         <div className="absolute inset-0 flex items-center justify-center"
-          style={{ background: 'radial-gradient(circle at 50% 40%, rgba(255,107,0,0.07) 0%, #0d1017 70%)' }}>
+          style={{ background: 'radial-gradient(circle at 50% 40%, rgba(255,153,51,0.07) 0%, #0d1017 70%)' }}>
           <Avatar src={avatar} name={userName} size="xl" />
         </div>
       )}
@@ -642,7 +642,7 @@ function VideoTile({ videoRef, stream, name, isHost, audioMuted, videoOff, avata
       {/* Host badge */}
       {isHost && (
         <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full text-[10px] font-bold text-white"
-          style={{ background: 'rgba(255,107,0,0.75)', backdropFilter: 'blur(4px)' }}>
+          style={{ background: 'rgba(255,153,51,0.75)', backdropFilter: 'blur(4px)' }}>
           Host
         </div>
       )}

@@ -200,7 +200,7 @@ export default function SessionDetail() {
             <div>
               <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }}
                 className="card space-y-4 sticky top-20"
-                style={{ border: '1px solid rgba(255,107,0,0.2)', background: 'rgba(255,107,0,0.03)' }}>
+                style={{ border: '1px solid rgba(255,153,51,0.2)', background: 'rgba(255,153,51,0.03)' }}>
                 {/* Price */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">

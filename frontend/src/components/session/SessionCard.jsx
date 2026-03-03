@@ -18,14 +18,14 @@ const STATUS_STYLES = {
   draft:     { pill: 'pill-ocean',  dot: 'bg-white/25' },
 }
 
-// Indian flag — saffron + navy deterministic tag styles
+// Indian Tricolour — saffron · green · navy deterministic tag styles
 const TAG_STYLES = [
-  { bg: 'rgba(255,107,0,0.14)', border: 'rgba(255,107,0,0.3)',  color: '#FF6B00' },  // saffron
-  { bg: 'rgba(57,73,171,0.12)',  border: 'rgba(57,73,171,0.28)',  color: '#9fa8da' },  // navy
-  { bg: 'rgba(255,173,92,0.1)',  border: 'rgba(255,173,92,0.25)', color: '#FFAD5C' },  // light saffron
-  { bg: 'rgba(92,107,192,0.1)',  border: 'rgba(92,107,192,0.22)', color: '#b0bdf7' },  // light navy
-  { bg: 'rgba(255,119,0,0.1)',   border: 'rgba(255,119,0,0.22)',  color: '#FF6B00' },  // deep saffron
-  { bg: 'rgba(26,35,126,0.12)',  border: 'rgba(26,35,126,0.25)',  color: '#7986cb' },  // dark navy
+  { bg: 'rgba(255,153,51,0.14)', border: 'rgba(255,153,51,0.32)', color: '#FF9933' },  // saffron
+  { bg: 'rgba(19,136,8,0.13)',   border: 'rgba(19,136,8,0.28)',   color: '#22A80C' },  // india green
+  { bg: 'rgba(255,179,71,0.12)', border: 'rgba(255,179,71,0.26)', color: '#FFB347' },  // light saffron
+  { bg: 'rgba(26,35,126,0.12)',  border: 'rgba(26,35,126,0.26)',  color: '#7986CB' },  // ashoka navy
+  { bg: 'rgba(34,168,12,0.11)',  border: 'rgba(34,168,12,0.24)',  color: '#4CAF50' },  // light green
+  { bg: 'rgba(0,0,128,0.12)',    border: 'rgba(0,0,128,0.24)',    color: '#9FA8DA' },  // deep navy
 ]
 const tagStyle = (str) => TAG_STYLES[(str?.charCodeAt(0) || 0) % TAG_STYLES.length]
 
@@ -47,8 +47,8 @@ export default function SessionCard({ session }) {
       whileHover={{ y: -6, transition: { duration: 0.2, ease: 'easeOut' } }}
       className="card flex flex-col gap-3 h-full cursor-pointer group"
       style={{
-        border: isLive ? '1px solid rgba(255,107,0,0.4)' : '1px solid rgba(255,107,0,0.1)',
-        boxShadow: isLive ? '0 0 20px rgba(255,107,0,0.15)' : undefined,
+        border: isLive ? '1px solid rgba(255,153,51,0.45)' : '1px solid rgba(255,153,51,0.1)',
+        boxShadow: isLive ? '0 0 24px rgba(255,153,51,0.18)' : undefined,
       }}>
 
       {/* Top row: status + cost */}
@@ -64,8 +64,8 @@ export default function SessionCard({ session }) {
         </div>
         <motion.div whileHover={{ scale: 1.1 }}
           className="flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-bold text-white"
-          style={{ background: 'rgba(255,107,0,0.1)', border: '1px solid rgba(255,107,0,0.25)' }}>
-          <Zap size={11} className="fill-orange-400 text-orange-400" />{creditCost}
+          style={{ background: 'rgba(255,153,51,0.1)', border: '1px solid rgba(255,153,51,0.28)' }}>
+          <Zap size={11} className="fill-saffron-400 text-saffron-400" />{creditCost}
         </motion.div>
       </div>
 
@@ -87,7 +87,7 @@ export default function SessionCard({ session }) {
       {urgentSeat && (
         <motion.p
           animate={{ opacity: [1, 0.5, 1] }} transition={{ duration: 1.2, repeat: Infinity }}
-          className="text-[11px] font-bold text-orange-400 flex items-center gap-1">
+          className="text-[11px] font-bold text-saffron-400 flex items-center gap-1">
           🔥 Only {seatsLeft} seat{seatsLeft > 1 ? 's' : ''} left!
         </motion.p>
       )}
@@ -97,7 +97,7 @@ export default function SessionCard({ session }) {
         <span className="flex items-center gap-1"><Clock size={11} />{duration}m</span>
         <span className="flex items-center gap-1">
           <Users size={11} />
-          <span className={seatsLeft === 0 ? 'text-white/60 font-semibold' : seatsLeft <= 2 ? 'text-orange-300 font-semibold' : ''}>
+          <span className={seatsLeft === 0 ? 'text-white/60 font-semibold' : seatsLeft <= 2 ? 'text-saffron-300 font-semibold' : ''}>
             {seatsLeft}/{maxSeats}
           </span>
         </span>
@@ -113,7 +113,7 @@ export default function SessionCard({ session }) {
               <p className="text-xs font-medium text-white/60">{hostId.name}</p>
               {hostId.rating > 0 && (
                 <div className="flex items-center gap-0.5">
-                  <Star size={9} className="fill-orange-400 text-orange-400" />
+                  <Star size={9} className="fill-saffron-400 text-saffron-400" />
                   <span className="text-[10px] text-white/35">{Number(hostId.rating).toFixed(1)}</span>
                 </div>
               )}
@@ -121,7 +121,7 @@ export default function SessionCard({ session }) {
           </div>
         ) : <span />}
         <Link to={`/sessions/${_id}`}
-          className="text-xs font-bold text-orange-400 hover:text-orange-300 transition-colors px-3 py-1.5 rounded-lg hover:bg-orange-500/10 flex items-center gap-1">
+          className="text-xs font-bold text-saffron-400 hover:text-saffron-300 transition-colors px-3 py-1.5 rounded-lg hover:bg-saffron-500/10 flex items-center gap-1">
           View <span className="group-hover:translate-x-1 inline-block transition-transform">→</span>
         </Link>
       </div>

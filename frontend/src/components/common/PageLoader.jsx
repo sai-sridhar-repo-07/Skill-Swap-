@@ -10,7 +10,7 @@ export default function PageLoader() {
           transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
           className="relative w-16 h-16">
           <div className="absolute inset-0 rounded-full opacity-20"
-            style={{ background: 'conic-gradient(from 0deg, #CC5200, #FF6B00, #FF8C00, #FFAD5C, #CC5200)' }} />
+            style={{ background: 'conic-gradient(from 0deg, #CC5200, #FF9933, #FF8C00, #FFAD5C, #CC5200)' }} />
           <motion.div
             animate={{ rotate: -360 }}
             transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
@@ -28,7 +28,7 @@ export default function PageLoader() {
               animate={{ scale: [0.5, 1, 0.5], opacity: [0.3, 1, 0.3] }}
               transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
               className="w-2 h-2 rounded-full"
-              style={{ background: ['#E65C00', '#FF6B00', '#FF8C00'][i] }} />
+              style={{ background: ['#E65C00', '#FF9933', '#FF8C00'][i] }} />
           ))}
         </div>
       </div>

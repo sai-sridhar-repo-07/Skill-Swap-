@@ -57,7 +57,7 @@ export default function TeacherStatsBar({ userId }) {
         </div>
 
         <div>
-          <div className="text-2xl font-black" style={{ color: '#FF8C00' }}>
+          <div className="text-2xl font-black" style={{ color: '#FF9933' }}>
             <CountUp to={parseFloat((rating || 0).toFixed(1)) * 10} duration={1.4} />
             <span className="text-base">/{totalReviews > 0 ? 50 : 0}</span>
           </div>
@@ -71,7 +71,7 @@ export default function TeacherStatsBar({ userId }) {
               animate={{ width: `${(rating / 5) * 100}%` }}
               transition={{ duration: 1.2, ease: 'easeOut' }}
               className="h-full rounded-full"
-              style={{ background: 'linear-gradient(90deg, #FF6B00, #FF8C00)' }}
+              style={{ background: 'linear-gradient(90deg, #FF9933, #FF9933)' }}
             />
           </div>
         </div>
@@ -85,7 +85,7 @@ export default function TeacherStatsBar({ userId }) {
           <div className="text-[11px] text-white/40">Top Skill</div>
           {topSkills?.[0]?.level && (
             <span className="text-[10px] px-1.5 py-0.5 rounded-full"
-              style={{ background: 'rgba(255,107,0,0.15)', color: '#FF8C00' }}>
+              style={{ background: 'rgba(255,153,51,0.15)', color: '#FF9933' }}>
               {topSkills[0].level}
             </span>
           )}

@@ -43,7 +43,7 @@ export default function CreateSession() {
       <div className="pt-16">
         {/* Hero header */}
         <div className="border-b border-white/5 py-10 px-4"
-          style={{ background: 'linear-gradient(180deg, rgba(255,107,0,0.05) 0%, transparent 100%)' }}>
+          style={{ background: 'linear-gradient(180deg, rgba(255,153,51,0.05) 0%, transparent 100%)' }}>
           <div className="max-w-3xl mx-auto">
             <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
               <Link to="/sessions" className="inline-flex items-center gap-2 text-white/40 hover:text-white text-sm mb-5 transition-colors group">
@@ -66,7 +66,7 @@ export default function CreateSession() {
 
             {/* Session Details */}
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-              className="card space-y-4" style={{ border: '1px solid rgba(255,107,0,0.15)' }}>
+              className="card space-y-4" style={{ border: '1px solid rgba(255,153,51,0.15)' }}>
               <h2 className="text-sm font-bold text-white uppercase tracking-wider pb-3 border-b border-white/8 flex items-center gap-2">
                 <span className="w-1.5 h-4 rounded-full" style={{ background: 'linear-gradient(180deg, #CC5200, #FF8C00)' }} />
                 Session Details
@@ -121,9 +121,9 @@ export default function CreateSession() {
 
             {/* Schedule & Pricing */}
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-              className="card space-y-4" style={{ border: '1px solid rgba(255,107,0,0.15)' }}>
+              className="card space-y-4" style={{ border: '1px solid rgba(255,153,51,0.15)' }}>
               <h2 className="text-sm font-bold text-white uppercase tracking-wider pb-3 border-b border-white/8 flex items-center gap-2">
-                <span className="w-1.5 h-4 rounded-full" style={{ background: 'linear-gradient(180deg, #FF6B00, #FFAD5C)' }} />
+                <span className="w-1.5 h-4 rounded-full" style={{ background: 'linear-gradient(180deg, #FF9933, #FFAD5C)' }} />
                 Schedule &amp; Pricing
               </h2>
 
@@ -165,10 +165,10 @@ export default function CreateSession() {
                 animate={{ scale: totalEarnings > 0 ? [1, 1.02, 1] : 1 }}
                 transition={{ duration: 0.3 }}
                 className="rounded-xl p-4 flex items-center justify-between"
-                style={{ background: 'rgba(255,107,0,0.08)', border: '1px solid rgba(255,107,0,0.2)' }}>
+                style={{ background: 'rgba(255,153,51,0.08)', border: '1px solid rgba(255,153,51,0.2)' }}>
                 <div>
                   <p className="text-xs text-white/45 mb-0.5">Potential earnings (if full)</p>
-                  <p className="text-2xl font-black" style={{ color: '#FF6B00' }}>{totalEarnings} <span className="text-base font-normal text-white/50">credits</span></p>
+                  <p className="text-2xl font-black" style={{ color: '#FF9933' }}>{totalEarnings} <span className="text-base font-normal text-white/50">credits</span></p>
                 </div>
                 <motion.div animate={{ rotate: [0, 10, -10, 0] }} transition={{ duration: 2, repeat: Infinity, repeatDelay: 2 }}
                   className="text-3xl">💰</motion.div>

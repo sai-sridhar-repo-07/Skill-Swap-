@@ -15,10 +15,10 @@ export default function SessionFilters({ filters, onChange, onReset }) {
   const hasFilters = filters.search || filters.category || filters.level || filters.sort !== 'scheduledAt'
 
   return (
-    <div className="card space-y-4" style={{ border: '1px solid rgba(255,107,0,0.15)' }}>
+    <div className="card space-y-4" style={{ border: '1px solid rgba(255,153,51,0.15)' }}>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 text-white/60 text-xs font-bold uppercase tracking-wider">
-          <SlidersHorizontal size={13} className="text-coral-400" style={{ color: '#FF6B00' }} />
+          <SlidersHorizontal size={13} className="text-coral-400" style={{ color: '#FF9933' }} />
           Filters
         </div>
         {hasFilters && (
@@ -50,7 +50,7 @@ export default function SessionFilters({ filters, onChange, onReset }) {
                   ? 'text-white border-coral-500/40'
                   : 'text-white/40 border-white/10 hover:text-white hover:border-white/20'
               )}
-              style={filters.category === cat ? { background: 'rgba(255,107,0,0.15)', borderColor: 'rgba(255,107,0,0.35)' } : { background: 'var(--bg-card)' }}>
+              style={filters.category === cat ? { background: 'rgba(255,153,51,0.15)', borderColor: 'rgba(255,153,51,0.35)' } : { background: 'var(--bg-card)' }}>
               {cat}
             </button>
           ))}

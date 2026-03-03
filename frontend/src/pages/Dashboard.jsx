@@ -15,7 +15,7 @@ import CreditTopupModal from '../components/payments/CreditTopupModal'
 import api from '../services/api'
 
 const QUICK_ACTIONS = [
-  { label: 'Create Session', icon: Plus,   to: '/sessions/create', color: 'rgba(255,107,0,0.15)', border: 'rgba(255,107,0,0.3)' },
+  { label: 'Create Session', icon: Plus,   to: '/sessions/create', color: 'rgba(255,153,51,0.15)', border: 'rgba(255,153,51,0.3)' },
   { label: 'Browse',         icon: Search, to: '/sessions',        color: 'rgba(57,73,171,0.15)',  border: 'rgba(57,73,171,0.3)' },
   { label: 'Edit Profile',   icon: Edit3,  to: '/profile/edit',    color: 'rgba(255,255,255,0.05)', border: 'rgba(255,255,255,0.1)' },
 ]
@@ -27,18 +27,18 @@ const fadeUp = {
 
 const STATS = (user, hosted, booked) => [
   { icon: '⚡', label: 'Credits Balance', value: formatCredits(user?.creditsBalance), sub: 'Available to spend',
-    gradient: 'linear-gradient(135deg,rgba(255,255,255,0.15),rgba(255,107,0,0.05))',
+    gradient: 'linear-gradient(135deg,rgba(255,255,255,0.15),rgba(255,153,51,0.05))',
     border: 'rgba(255,255,255,0.25)', valueColor: 'text-yellow-400' },
   { icon: '🎓', label: 'Teaching', value: hosted.length, sub: 'Sessions hosted',
-    gradient: 'linear-gradient(135deg,rgba(255,107,0,0.15),rgba(255,173,92,0.05))',
-    border: 'rgba(255,107,0,0.25)', valueColor: 'text-coral-400' },
+    gradient: 'linear-gradient(135deg,rgba(255,153,51,0.15),rgba(255,179,71,0.05))',
+    border: 'rgba(255,153,51,0.25)', valueColor: 'text-coral-400' },
   { icon: '📚', label: 'Learning', value: booked.length, sub: 'Sessions attended',
-    gradient: 'linear-gradient(135deg,rgba(255,107,0,0.15),rgba(255,255,255,0.05))',
-    border: 'rgba(255,107,0,0.25)', valueColor: 'text-cyan-400' },
+    gradient: 'linear-gradient(135deg,rgba(255,153,51,0.15),rgba(255,255,255,0.05))',
+    border: 'rgba(255,153,51,0.25)', valueColor: 'text-cyan-400' },
   { icon: '⭐', label: 'Rating', value: user?.rating > 0 ? Number(user.rating).toFixed(1) : '—',
     sub: `${user?.totalReviews || 0} reviews`,
-    gradient: 'linear-gradient(135deg,rgba(255,107,0,0.15),rgba(255,107,0,0.05))',
-    border: 'rgba(255,107,0,0.25)', valueColor: 'text-orange-300' },
+    gradient: 'linear-gradient(135deg,rgba(255,153,51,0.15),rgba(255,153,51,0.05))',
+    border: 'rgba(255,153,51,0.25)', valueColor: 'text-orange-300' },
 ]
 
 export default function Dashboard() {
@@ -100,13 +100,13 @@ export default function Dashboard() {
           <motion.div
             initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
             className="flex items-center justify-between p-4 rounded-2xl"
-            style={{ background: 'rgba(255,107,0,0.1)', border: '1px solid rgba(255,107,0,0.3)', boxShadow: '0 0 20px rgba(255,107,0,0.2)' }}>
+            style={{ background: 'rgba(255,153,51,0.1)', border: '1px solid rgba(255,153,51,0.3)', boxShadow: '0 0 20px rgba(255,153,51,0.2)' }}>
             <p className="text-sm text-orange-300 font-semibold">
               ⚡ You have {user?.creditsBalance || 0} credits left — top up to keep booking sessions!
             </p>
             <button onClick={() => setShowTopup(true)}
               className="text-xs font-bold text-white px-3 py-1.5 rounded-xl ml-4"
-              style={{ background: 'linear-gradient(135deg, #CC5200, #FF8C00)' }}>
+              style={{ background: 'linear-gradient(135deg, #CC6A00, #FF9933)' }}>
               Buy Credits
             </button>
           </motion.div>
@@ -161,18 +161,18 @@ export default function Dashboard() {
             <AreaChart data={chartData}>
               <defs>
                 <linearGradient id="gradC" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%"   stopColor="#FF6B00" stopOpacity={0.4} />
-                  <stop offset="50%"  stopColor="#FFAD5C" stopOpacity={0.2} />
-                  <stop offset="100%" stopColor="#FF6B00" stopOpacity={0} />
+                  <stop offset="0%"   stopColor="#FF9933" stopOpacity={0.4} />
+                  <stop offset="50%"  stopColor="#FFB347" stopOpacity={0.2} />
+                  <stop offset="100%" stopColor="#FF9933" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <XAxis dataKey="day" tick={{ fill: '#555', fontSize: 11 }} axisLine={false} tickLine={false} />
               <YAxis allowDecimals={false} tick={{ fill: '#555', fontSize: 11 }} axisLine={false} tickLine={false} />
               <Tooltip
-                contentStyle={{ background: 'var(--bg-secondary)', border: '1px solid rgba(255,107,0,0.3)', borderRadius: '12px', color: '#fff', fontSize: 12 }}
-                cursor={{ stroke: 'rgba(255,107,0,0.3)', strokeWidth: 1 }}
+                contentStyle={{ background: 'var(--bg-secondary)', border: '1px solid rgba(255,153,51,0.3)', borderRadius: '12px', color: '#fff', fontSize: 12 }}
+                cursor={{ stroke: 'rgba(255,153,51,0.3)', strokeWidth: 1 }}
               />
-              <Area type="monotone" dataKey="sessions" stroke="#FF6B00" strokeWidth={2.5} fill="url(#gradC)" dot={{ r: 4, fill: '#FF6B00', strokeWidth: 0 }} activeDot={{ r: 6, fill: '#FFAD5C' }} />
+              <Area type="monotone" dataKey="sessions" stroke="#FF9933" strokeWidth={2.5} fill="url(#gradC)" dot={{ r: 4, fill: '#FF9933', strokeWidth: 0 }} activeDot={{ r: 6, fill: '#FFB347' }} />
             </AreaChart>
           </ResponsiveContainer>
         </motion.div>

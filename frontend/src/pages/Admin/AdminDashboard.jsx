@@ -9,13 +9,13 @@ import { timeAgo, formatCredits } from '../../utils/helpers'
 
 const STAT_CARDS = (d) => [
   { icon: <Users size={18}/>, label: 'Total Users',      value: d?.stats?.totalUsers || 0,
-    grad: 'linear-gradient(135deg, rgba(255,173,92,0.1), rgba(255,107,0,0.08))', accent: '#FF6B00', dot: 'bg-cyan-400' },
+    grad: 'linear-gradient(135deg, rgba(255,179,71,0.1), rgba(255,153,51,0.08))', accent: '#FF9933', dot: 'bg-cyan-400' },
   { icon: <BookOpen size={18}/>, label: 'Total Sessions', value: d?.stats?.totalSessions || 0,
-    grad: 'linear-gradient(135deg, rgba(255,107,0,0.12), rgba(255,119,0,0.08))', accent: '#FF6B00', dot: 'bg-coral-400' },
+    grad: 'linear-gradient(135deg, rgba(255,153,51,0.12), rgba(255,153,51,0.08))', accent: '#FF9933', dot: 'bg-coral-400' },
   { icon: <TrendingUp size={18}/>, label: 'Completed',   value: d?.stats?.completedSessions || 0,
-    grad: 'linear-gradient(135deg, rgba(255,107,0,0.12), rgba(255,119,0,0.08))', accent: '#FF6B00', dot: 'bg-lime-400' },
+    grad: 'linear-gradient(135deg, rgba(255,153,51,0.12), rgba(255,153,51,0.08))', accent: '#FF9933', dot: 'bg-lime-400' },
   { icon: <Zap size={18}/>, label: 'Credits Issued',     value: formatCredits(d?.stats?.totalCreditsInSystem),
-    grad: 'linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,173,92,0.06))', accent: '#ffffff', dot: 'bg-yellow-400' },
+    grad: 'linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,179,71,0.06))', accent: '#ffffff', dot: 'bg-yellow-400' },
 ]
 
 const STATUS_PILL = { live: 'pill-fire', upcoming: 'pill-ocean', completed: 'pill-purple', cancelled: 'pill-pink' }
@@ -69,7 +69,7 @@ export default function AdminDashboard() {
         <div className="grid lg:grid-cols-2 gap-6">
           {/* Recent Users */}
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
-            className="card" style={{ border: '1px solid rgba(255,107,0,0.12)' }}>
+            className="card" style={{ border: '1px solid rgba(255,153,51,0.12)' }}>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-sm font-bold text-white flex items-center gap-2">
                 <Users size={14} className="text-cyan-400" /> Recent Users
@@ -100,7 +100,7 @@ export default function AdminDashboard() {
 
           {/* Recent Sessions */}
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
-            className="card" style={{ border: '1px solid rgba(255,107,0,0.12)' }}>
+            className="card" style={{ border: '1px solid rgba(255,153,51,0.12)' }}>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-sm font-bold text-white flex items-center gap-2">
                 <BookOpen size={14} className="text-coral-400" /> Recent Sessions

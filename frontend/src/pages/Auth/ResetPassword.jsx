@@ -31,7 +31,7 @@ export default function ResetPassword() {
     <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--bg-primary)' }}>
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
         className="card text-center p-8 max-w-sm"
-        style={{ border: '1px solid rgba(255,107,0,0.2)' }}>
+        style={{ border: '1px solid rgba(255,153,51,0.2)' }}>
         <div className="text-4xl mb-3">❌</div>
         <p className="text-white/60 mb-4">Invalid reset link.</p>
         <Link to="/forgot-password" className="btn-primary">Request new link</Link>
@@ -44,22 +44,22 @@ export default function ResetPassword() {
       {/* Background orb */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full opacity-10 blur-3xl"
-          style={{ background: 'radial-gradient(circle, #FF6B00 0%, transparent 70%)' }} />
+          style={{ background: 'radial-gradient(circle, #FF9933 0%, transparent 70%)' }} />
       </div>
 
       <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-md relative">
         <div className="card !p-8 space-y-6 relative overflow-hidden"
-          style={{ border: '1px solid rgba(255,107,0,0.2)' }}>
+          style={{ border: '1px solid rgba(255,153,51,0.2)' }}>
           <div className="absolute top-0 inset-x-0 h-0.5 rounded-full"
-            style={{ background: 'linear-gradient(90deg, #E65C00, #FF6B00, #FF8C00)' }} />
+            style={{ background: 'linear-gradient(90deg, #E65C00, #FF9933, #FF8C00)' }} />
 
           <div className="text-center">
             <motion.div
               animate={{ rotate: [0, 10, -10, 0] }} transition={{ duration: 3, repeat: Infinity }}
               className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
-              style={{ background: 'rgba(255,107,0,0.1)', border: '1px solid rgba(255,107,0,0.25)' }}>
-              <Lock size={28} style={{ color: '#FF6B00' }} />
+              style={{ background: 'rgba(255,153,51,0.1)', border: '1px solid rgba(255,153,51,0.25)' }}>
+              <Lock size={28} style={{ color: '#FF9933' }} />
             </motion.div>
             <h1 className="text-2xl font-black text-white">New password</h1>
             <p className="text-white/45 text-sm mt-1">Choose a strong password</p>

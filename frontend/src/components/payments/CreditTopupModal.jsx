@@ -62,12 +62,12 @@ export default function CreditTopupModal({ onClose }) {
                     ? 'linear-gradient(135deg, rgba(204,82,0,0.25), rgba(255,140,0,0.15))'
                     : 'rgba(255,255,255,0.04)',
                   border: selected === pack.id
-                    ? '1.5px solid rgba(255,107,0,0.6)'
+                    ? '1.5px solid rgba(255,153,51,0.6)'
                     : '1.5px solid rgba(255,255,255,0.08)',
                 }}>
                 {pack.highlight && (
                   <span className="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full text-[10px] font-bold text-white flex items-center gap-1"
-                    style={{ background: 'linear-gradient(135deg, #CC5200, #FF8C00)' }}>
+                    style={{ background: 'linear-gradient(135deg, #CC6A00, #FF9933)' }}>
                     <Star size={8} className="fill-white" /> Best Value
                   </span>
                 )}
@@ -83,7 +83,7 @@ export default function CreditTopupModal({ onClose }) {
             onClick={handlePurchase}
             disabled={loading}
             className="w-full py-3 rounded-xl text-white font-bold transition-all disabled:opacity-60"
-            style={{ background: 'linear-gradient(135deg, #CC5200, #FF8C00)' }}>
+            style={{ background: 'linear-gradient(135deg, #CC6A00, #FF9933)' }}>
             {loading ? 'Redirecting to checkout…' : `Purchase ${PACKS.find(p => p.id === selected)?.credits} Credits`}
           </button>
 

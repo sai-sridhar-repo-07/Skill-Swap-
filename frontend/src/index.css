@@ -3,19 +3,20 @@
 @tailwind utilities;
 
 /* ═══════════════════════════════════════════════════════════════
-   SKILLSWAP — Indian Flag Theme  (Sarvam AI-inspired elegance)
-   Saffron #FF6B00  ·  Navy #1A237E  ·  White  ·  India Green #138808
+   SKILLSWAP — Indian Tricolour Theme
+   Saffron #FF9933  ·  White  ·  India Green #138808  ·  Ashoka Navy #000080
+   Background: deep navy-black  ·  Cards: darkened navy
 ═══════════════════════════════════════════════════════════════ */
 
 /* ── CSS VARIABLES ─────────────────────────────────────────── */
 :root {
-  /* Dark theme (navy-black base, not pure black) */
-  --bg-primary:    #080D1A;
-  --bg-secondary:  #0F1628;
-  --bg-tertiary:   #172035;
-  --bg-card:       #111827;
-  --bg-card-hover: #162138;
-  --bg-input:      #111827;
+  /* Dark theme (deep navy-black) */
+  --bg-primary:    #06080F;
+  --bg-secondary:  #0C1020;
+  --bg-tertiary:   #121830;
+  --bg-card:       #0E1525;
+  --bg-card-hover: #141E32;
+  --bg-input:      #0E1525;
   --bg-btn-sec:    rgba(255,255,255,0.06);
   --bg-hover:      rgba(255,255,255,0.06);
   --bg-subtle:     rgba(255,255,255,0.03);
@@ -29,20 +30,26 @@
   --border-subtle:  rgba(255,255,255,0.07);
   --border-default: rgba(255,255,255,0.10);
   --border-medium:  rgba(255,255,255,0.14);
-  --border-accent:  rgba(255,107,0,0.25);
+  --border-accent:  rgba(255,153,51,0.28);
 
-  --shadow-xs:  0 1px 2px rgba(0,0,0,0.3);
-  --shadow-sm:  0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.2);
-  --shadow-md:  0 4px 16px rgba(0,0,0,0.35), 0 12px 32px rgba(0,0,0,0.25);
-  --shadow-lg:  0 8px 24px rgba(0,0,0,0.4), 0 24px 48px rgba(0,0,0,0.3);
+  --shadow-xs:  0 1px 2px rgba(0,0,0,0.35);
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.35), 0 4px 12px rgba(0,0,0,0.25);
+  --shadow-md:  0 4px 16px rgba(0,0,0,0.4), 0 12px 32px rgba(0,0,0,0.3);
+  --shadow-lg:  0 8px 24px rgba(0,0,0,0.45), 0 24px 48px rgba(0,0,0,0.35);
   --shadow-card: var(--shadow-sm);
 
-  --saffron:        #FF6B00;
-  --saffron-light:  #FF8C00;
-  --saffron-dim:    rgba(255,107,0,0.12);
-  --navy:           #3949AB;
-  --navy-dark:      #1A237E;
-  --scrollbar-track: #0F1628;
+  /* Indian Tricolour palette */
+  --saffron:        #FF9933;   /* true India saffron */
+  --saffron-deep:   #E67E00;   /* deeper for hover/depth */
+  --saffron-light:  #FFB347;
+  --saffron-dim:    rgba(255,153,51,0.13);
+  --india-green:    #138808;   /* India flag green */
+  --india-green-light: #22A80C;
+  --india-green-dim:   rgba(19,136,8,0.13);
+  --ashoka-blue:    #000080;   /* Ashoka Chakra navy */
+  --navy:           #1A237E;
+  --navy-mid:       #283593;
+  --scrollbar-track: #0C1020;
 }
 
 /* ── LIGHT MODE ─────────────────────────────────────────────── */
@@ -66,7 +73,7 @@ html.light {
   --border-subtle:  rgba(0,0,0,0.06);
   --border-default: rgba(0,0,0,0.09);
   --border-medium:  rgba(0,0,0,0.13);
-  --border-accent:  rgba(255,107,0,0.22);
+  --border-accent:  rgba(255,153,51,0.22);
 
   --shadow-xs:  0 1px 2px rgba(0,0,0,0.04);
   --shadow-sm:  0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
@@ -74,7 +81,8 @@ html.light {
   --shadow-lg:  0 8px 24px rgba(0,0,0,0.10), 0 24px 48px rgba(0,0,0,0.08);
   --shadow-card: var(--shadow-sm);
 
-  --saffron-dim:    rgba(255,107,0,0.08);
+  --saffron-dim:    rgba(255,153,51,0.08);
+  --india-green-dim: rgba(19,136,8,0.08);
   --scrollbar-track: #F1F3F5;
 
   color-scheme: light;
@@ -96,10 +104,10 @@ html.light {
 
   ::-webkit-scrollbar { width: 5px; height: 5px; }
   ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
-  ::-webkit-scrollbar-thumb { background: #FF6B00; border-radius: 99px; opacity: 0.6; }
-  ::-webkit-scrollbar-thumb:hover { background: #FF8C00; }
+  ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #FF9933 0%, #138808 100%); border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: #FF9933; }
 
-  ::selection { background: rgba(255,107,0,0.2); color: var(--text-primary); }
+  ::selection { background: rgba(255,153,51,0.22); color: var(--text-primary); }
 }
 
 /* ── LIGHT MODE TAILWIND OVERRIDES ────────────────────────── */
@@ -173,21 +181,37 @@ html.light .placeholder-white\/25::placeholder { color: rgba(13,17,23,0.35); }
 
   /* ── BUTTONS ────────────────────── */
 
-  /* Primary — solid saffron, clean and confident */
+  /* Primary — India saffron gradient */
   .btn-primary {
     @apply relative inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold
            transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed;
-    background: #FF6B00;
+    background: linear-gradient(135deg, #E67E00, #FF9933);
     color: #FFFFFF;
     font-weight: 600;
     letter-spacing: -0.01em;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.15), 0 4px 12px rgba(255,107,0,0.3);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15), 0 4px 14px rgba(255,153,51,0.35);
     &:hover:not(:disabled) {
-      background: #E65C00;
+      background: linear-gradient(135deg, #CC6A00, #E67E00);
       transform: translateY(-1px);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 6px 18px rgba(255,107,0,0.38);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 6px 20px rgba(255,153,51,0.45);
     }
-    &:active:not(:disabled) { transform: translateY(0); background: #CC5200; }
+    &:active:not(:disabled) { transform: translateY(0); background: #CC6A00; }
+  }
+
+  /* India Green CTA button */
+  .btn-india-green {
+    @apply relative inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold
+           transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed;
+    background: linear-gradient(135deg, #0D6E06, #138808);
+    color: #FFFFFF;
+    font-weight: 600;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15), 0 4px 14px rgba(19,136,8,0.35);
+    &:hover:not(:disabled) {
+      background: linear-gradient(135deg, #0B5F05, #0D6E06);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 6px 20px rgba(19,136,8,0.45);
+    }
+    &:active:not(:disabled) { transform: translateY(0); }
   }
 
   /* Secondary — clean outline style */
@@ -209,22 +233,22 @@ html.light .placeholder-white\/25::placeholder { color: rgba(13,17,23,0.35); }
   .btn-lime {
     @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold
            transition-all duration-200 disabled:opacity-40;
-    background: #FF6B00;
+    background: linear-gradient(135deg, #E67E00, #FF9933);
     color: #fff;
-    box-shadow: 0 4px 12px rgba(255,107,0,0.3);
-    &:hover:not(:disabled) { background: #E65C00; transform: translateY(-1px); }
+    box-shadow: 0 4px 12px rgba(255,153,51,0.32);
+    &:hover:not(:disabled) { background: linear-gradient(135deg, #CC6A00, #E67E00); transform: translateY(-1px); }
   }
 
-  /* Ocean → navy outline */
+  /* Ocean → Ashoka navy outline */
   .btn-ocean {
     @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold
            transition-all duration-200 disabled:opacity-40;
-    background: rgba(57,73,171,0.1);
-    border: 1px solid rgba(57,73,171,0.25);
+    background: rgba(26,35,126,0.12);
+    border: 1px solid rgba(26,35,126,0.3);
     color: var(--text-primary);
     &:hover:not(:disabled) {
-      background: rgba(57,73,171,0.18);
-      border-color: rgba(57,73,171,0.4);
+      background: rgba(26,35,126,0.22);
+      border-color: rgba(26,35,126,0.45);
       transform: translateY(-1px);
     }
   }
@@ -250,8 +274,8 @@ html.light .placeholder-white\/25::placeholder { color: rgba(13,17,23,0.35); }
     color: var(--text-primary);
     &::placeholder { color: var(--text-dim); }
     &:focus {
-      border-color: #FF6B00;
-      box-shadow: 0 0 0 3px rgba(255,107,0,0.12);
+      border-color: #FF9933;
+      box-shadow: 0 0 0 3px rgba(255,153,51,0.14);
     }
     option { background: var(--bg-secondary); color: var(--text-primary); }
   }
@@ -262,9 +286,9 @@ html.light .placeholder-white\/25::placeholder { color: rgba(13,17,23,0.35); }
   /* ── SKELETON ───────────────────── */
   .skeleton {
     background: linear-gradient(90deg,
-      rgba(255,107,0,0.04) 25%,
-      rgba(255,107,0,0.08) 50%,
-      rgba(255,107,0,0.04) 75%);
+      rgba(255,153,51,0.04) 25%,
+      rgba(19,136,8,0.06) 50%,
+      rgba(255,153,51,0.04) 75%);
     background-size: 200% 100%;
     animation: shimmer 1.8s linear infinite;
     border-radius: 12px;
@@ -275,44 +299,50 @@ html.light .placeholder-white\/25::placeholder { color: rgba(13,17,23,0.35); }
   }
 
   /* ── GRADIENT TEXT ──────────────── */
-  .gradient-text        { background: linear-gradient(135deg, #E65C00, #FF6B00, #FF8C00); background-clip: text; -webkit-background-clip: text; color: transparent; }
-  .gradient-text-ocean  { background: linear-gradient(135deg, #3949AB, #5C6BC0); background-clip: text; -webkit-background-clip: text; color: transparent; }
-  .gradient-text-jungle { background: linear-gradient(135deg, #CC5200, #FF6B00); background-clip: text; -webkit-background-clip: text; color: transparent; }
-  .gradient-text-navy   { background: linear-gradient(135deg, #1A237E, #3949AB, #5C6BC0); background-clip: text; -webkit-background-clip: text; color: transparent; }
+  /* Tricolour: saffron → white → green */
+  .gradient-text        { background: linear-gradient(135deg, #FF9933, #FFD080, #138808); background-clip: text; -webkit-background-clip: text; color: transparent; }
+  .gradient-text-saffron { background: linear-gradient(135deg, #E67E00, #FF9933, #FFB347); background-clip: text; -webkit-background-clip: text; color: transparent; }
+  .gradient-text-green  { background: linear-gradient(135deg, #0D6E06, #138808, #22A80C); background-clip: text; -webkit-background-clip: text; color: transparent; }
+  .gradient-text-ocean  { background: linear-gradient(135deg, #000080, #1A237E, #3949AB); background-clip: text; -webkit-background-clip: text; color: transparent; }
+  .gradient-text-jungle { background: linear-gradient(135deg, #E67E00, #FF9933); background-clip: text; -webkit-background-clip: text; color: transparent; }
+  .gradient-text-navy   { background: linear-gradient(135deg, #000080, #1A237E, #283593); background-clip: text; -webkit-background-clip: text; color: transparent; }
 
   /* ── LAYOUT ─────────────────────── */
   .page-container { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8; }
   .section-title  { @apply text-xl font-semibold mb-6; color: var(--text-primary); }
 
-  /* ── NEON BORDERS → clean accents ── */
-  .neon-border-fire   { border: 1px solid rgba(255,107,0,0.35); }
-  .neon-border-lime   { border: 1px solid rgba(255,140,0,0.3); }
-  .neon-border-ocean  { border: 1px solid rgba(92,107,192,0.35); }
-  .neon-border-pink   { border: 1px solid rgba(92,107,192,0.28); }
+  /* ── NEON BORDERS → tricolour accents ── */
+  .neon-border-fire   { border: 1px solid rgba(255,153,51,0.38); }
+  .neon-border-lime   { border: 1px solid rgba(255,153,51,0.28); }
+  .neon-border-green  { border: 1px solid rgba(19,136,8,0.38); }
+  .neon-border-ocean  { border: 1px solid rgba(26,35,126,0.38); }
+  .neon-border-pink   { border: 1px solid rgba(40,53,147,0.28); }
   .neon-border-purple { border: 1px solid var(--border-default); }
 
   /* ── PILLS ──────────────────────── */
   .pill { @apply px-2.5 py-0.5 rounded-full text-xs font-medium; }
 
   /* Saffron pills */
-  .pill-fire   { @apply pill; background: rgba(255,107,0,0.12); color: #FF6B00; border: 1px solid rgba(255,107,0,0.22); }
-  .pill-lime   { @apply pill; background: rgba(255,140,0,0.1);  color: #FF8C00; border: 1px solid rgba(255,140,0,0.2); }
-  /* Navy pills */
-  .pill-ocean  { @apply pill; background: rgba(57,73,171,0.1);  color: #7986CB; border: 1px solid rgba(57,73,171,0.2); }
-  .pill-pink   { @apply pill; background: rgba(92,107,192,0.1); color: #9FA8DA; border: 1px solid rgba(92,107,192,0.18); }
+  .pill-fire   { @apply pill; background: rgba(255,153,51,0.13); color: #FF9933; border: 1px solid rgba(255,153,51,0.26); }
+  .pill-lime   { @apply pill; background: rgba(255,179,71,0.12); color: #FFB347; border: 1px solid rgba(255,179,71,0.24); }
+  /* India green pills */
+  .pill-india  { @apply pill; background: rgba(19,136,8,0.13);  color: #22A80C; border: 1px solid rgba(19,136,8,0.26); }
+  .pill-green  { @apply pill; background: rgba(34,168,12,0.12);  color: #22A80C; border: 1px solid rgba(34,168,12,0.24); }
+  /* Ashoka navy pills */
+  .pill-ocean  { @apply pill; background: rgba(26,35,126,0.12);  color: #7986CB; border: 1px solid rgba(26,35,126,0.24); }
+  .pill-pink   { @apply pill; background: rgba(40,53,147,0.12);  color: #9FA8DA; border: 1px solid rgba(40,53,147,0.22); }
   /* Neutral pills */
-  .pill-purple { @apply pill; background: var(--bg-subtle);     color: var(--text-muted); border: 1px solid var(--border-subtle); }
-  .pill-yellow { @apply pill; background: rgba(255,107,0,0.08); color: #FF8C00; border: 1px solid rgba(255,107,0,0.16); }
-
-  /* India green pill — for success/live */
-  .pill-india  { @apply pill; background: rgba(19,136,8,0.1); color: #4CAF50; border: 1px solid rgba(19,136,8,0.2); }
+  .pill-purple { @apply pill; background: var(--bg-subtle);      color: var(--text-muted); border: 1px solid var(--border-subtle); }
+  .pill-yellow { @apply pill; background: rgba(255,153,51,0.09); color: #FFB347; border: 1px solid rgba(255,153,51,0.18); }
 
   /* Light mode pill adjustments */
-  html.light .pill-fire   { color: #E65C00; background: rgba(255,107,0,0.08); }
-  html.light .pill-lime   { color: #CC5200; background: rgba(255,140,0,0.07); }
-  html.light .pill-ocean  { color: #3949AB; background: rgba(57,73,171,0.07); }
-  html.light .pill-pink   { color: #5C6BC0; background: rgba(92,107,192,0.07); }
-  html.light .pill-yellow { color: #CC5200; background: rgba(255,107,0,0.06); }
+  html.light .pill-fire   { color: #E67E00; background: rgba(255,153,51,0.09); }
+  html.light .pill-lime   { color: #CC6A00; background: rgba(255,179,71,0.08); }
+  html.light .pill-india  { color: #0D6E06; background: rgba(19,136,8,0.08); }
+  html.light .pill-green  { color: #0D6E06; background: rgba(34,168,12,0.08); }
+  html.light .pill-ocean  { color: #1A237E; background: rgba(26,35,126,0.08); }
+  html.light .pill-pink   { color: #283593; background: rgba(40,53,147,0.07); }
+  html.light .pill-yellow { color: #CC6A00; background: rgba(255,153,51,0.07); }
 }
 
 /* ── UTILITIES ────────────────────────────────────────────── */
@@ -322,9 +352,10 @@ html.light .placeholder-white\/25::placeholder { color: rgba(13,17,23,0.35); }
   .bg-void-700 { background-color: var(--bg-tertiary); }
   .text-balance { text-wrap: balance; }
 
-  /* Saffron glow shadow — used on logo/icon elements */
-  .shadow-glow-fire { box-shadow: 0 4px 16px rgba(255,107,0,0.4); }
-  .shadow-glow-navy { box-shadow: 0 4px 16px rgba(57,73,171,0.4); }
+  /* Tricolour glow shadows */
+  .shadow-glow-fire  { box-shadow: 0 4px 16px rgba(255,153,51,0.42); }
+  .shadow-glow-green { box-shadow: 0 4px 16px rgba(19,136,8,0.42); }
+  .shadow-glow-navy  { box-shadow: 0 4px 16px rgba(26,35,126,0.42); }
 
   /* Subtle dot-grid background for decorative panels */
   .bg-grid-dark {

@@ -42,7 +42,7 @@ export const useSocket = () => {
           color: 'white', border: '1px solid rgba(255,255,255,0.18)',
           borderRadius: '16px', padding: '12px 16px',
           display: 'flex', alignItems: 'center', gap: '12px',
-          minWidth: '280px', cursor: 'pointer', boxShadow: '0 8px 32px rgba(255,107,0,0.35)',
+          minWidth: '280px', cursor: 'pointer', boxShadow: '0 8px 32px rgba(255,153,51,0.35)',
         },
       },
         h('span', { style: { fontSize: '22px' } }, '🔴'),

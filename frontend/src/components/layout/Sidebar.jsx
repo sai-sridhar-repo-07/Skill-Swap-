@@ -42,7 +42,7 @@ export default function Sidebar() {
           {/* User card */}
           <motion.div whileHover={{ scale: 1.01 }}
             className="rounded-2xl p-3 mb-4 flex items-center gap-3"
-            style={{ background: 'linear-gradient(135deg, rgba(255,107,0,0.1), rgba(255,173,92,0.05))', border: '1px solid rgba(255,107,0,0.2)' }}>
+            style={{ background: 'linear-gradient(135deg, rgba(255,153,51,0.1), rgba(255,179,71,0.05))', border: '1px solid rgba(255,153,51,0.2)' }}>
             <Avatar src={user?.avatar} name={user?.name} size="md" />
             <div className="flex-1 min-w-0">
               <p className="text-sm font-bold truncate" style={{ color: 'var(--text-primary)' }}>{user?.name}</p>
@@ -98,7 +98,7 @@ export default function Sidebar() {
         {/* Bottom hint */}
         <div className="p-4" style={{ borderTop: '1px solid var(--border-subtle)' }}>
           <div className="rounded-xl p-3 text-center"
-            style={{ background: 'linear-gradient(135deg, rgba(255,107,0,0.08), rgba(255,107,0,0.05))', border: '1px solid rgba(255,107,0,0.15)' }}>
+            style={{ background: 'linear-gradient(135deg, rgba(255,153,51,0.08), rgba(255,153,51,0.05))', border: '1px solid rgba(255,153,51,0.15)' }}>
             <p className="text-xs" style={{ color: 'var(--text-dim)' }}>Teach a skill, earn credits</p>
             <NavLink to="/sessions/create" onClick={closeSidebar}
               className="text-xs font-bold text-orange-300 hover:text-orange-200 transition-colors">

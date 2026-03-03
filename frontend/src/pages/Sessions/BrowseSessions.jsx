@@ -53,7 +53,7 @@ export default function BrowseSessions() {
       <div className="pt-16">
         {/* Hero search */}
         <div className="relative py-14 px-4 overflow-hidden border-b border-white/5"
-          style={{ background: 'linear-gradient(180deg, rgba(255,107,0,0.04) 0%, rgba(255,107,0,0.02) 100%)' }}>
+          style={{ background: 'linear-gradient(180deg, rgba(255,153,51,0.04) 0%, rgba(255,153,51,0.02) 100%)' }}>
           <div className="absolute inset-0 bg-grid-dark opacity-40 pointer-events-none" />
           <div className="max-w-2xl mx-auto text-center relative space-y-4">
             <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
@@ -70,7 +70,7 @@ export default function BrowseSessions() {
                 placeholder="Search by skill, topic, or keyword…"
                 value={search}
                 onChange={(e) => handleSearch(e.target.value)}
-                style={{ border: '1.5px solid rgba(255,107,0,0.25)', boxShadow: '0 0 20px rgba(255,107,0,0.1)' }}
+                style={{ border: '1.5px solid rgba(255,153,51,0.25)', boxShadow: '0 0 20px rgba(255,153,51,0.1)' }}
               />
               {search && (
                 <button onClick={() => handleSearch('')}
@@ -126,7 +126,7 @@ export default function BrowseSessions() {
               className={`flex items-center gap-2 px-4 py-2 rounded-xl border text-sm font-semibold transition-all ${
                 showFilters ? 'border-coral-500/40 text-coral-400' : 'border-white/10 text-white/50 hover:text-white hover:border-white/20'
               }`}
-              style={{ background: showFilters ? 'rgba(255,107,0,0.08)' : 'rgba(255,255,255,0.04)' }}>
+              style={{ background: showFilters ? 'rgba(255,153,51,0.08)' : 'rgba(255,255,255,0.04)' }}>
               <SlidersHorizontal size={14} /> Filters
               {activeFilters.length > 0 && (
                 <span className="w-5 h-5 rounded-full text-[10px] font-black text-white flex items-center justify-center"
@@ -154,7 +154,7 @@ export default function BrowseSessions() {
               <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }} className="overflow-hidden mb-6">
                 <div className="card grid sm:grid-cols-2 lg:grid-cols-4 gap-4"
-                  style={{ border: '1px solid rgba(255,107,0,0.2)', background: 'rgba(255,107,0,0.04)' }}>
+                  style={{ border: '1px solid rgba(255,153,51,0.2)', background: 'rgba(255,153,51,0.04)' }}>
                   {[
                     { label: 'Skill Category', key: 'skill', options: SKILL_CATEGORIES, placeholder: 'All skills' },
                     { label: 'Level', key: 'level', options: LEVELS, placeholder: 'All levels' },

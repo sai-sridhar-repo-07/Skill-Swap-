@@ -24,7 +24,7 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md' })
           >
             {/* Gradient accent line */}
             <div className="absolute top-0 left-8 right-8 h-px rounded-full opacity-60"
-              style={{ background: 'linear-gradient(90deg, #E65C00, #FF6B00, #FF8C00)' }} />
+              style={{ background: 'linear-gradient(90deg, #E65C00, #FF9933, #FF8C00)' }} />
             <div className="flex items-center justify-between mb-5">
               {title && <h2 className="text-lg font-bold text-white">{title}</h2>}
               <button onClick={onClose}

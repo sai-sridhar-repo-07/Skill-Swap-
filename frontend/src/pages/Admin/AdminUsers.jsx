@@ -51,7 +51,7 @@ export default function AdminUsers() {
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
           className="flex items-center gap-3 mb-8">
           <div className="w-11 h-11 rounded-xl flex items-center justify-center"
-            style={{ background: 'rgba(255,107,0,0.12)', border: '1px solid rgba(255,107,0,0.25)' }}>
+            style={{ background: 'rgba(255,153,51,0.12)', border: '1px solid rgba(255,153,51,0.25)' }}>
             <Users size={20} className="text-cyan-400" />
           </div>
           <h1 className="text-2xl font-black text-white">User Management</h1>

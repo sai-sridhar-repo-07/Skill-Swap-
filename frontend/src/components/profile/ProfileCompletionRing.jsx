@@ -6,7 +6,7 @@ const CIRCUMFERENCE = 2 * Math.PI * RADIUS
 
 const ringColor = (pct) => {
   if (pct >= 100) return '#22c55e'
-  if (pct >= 40)  return '#FF6B00'
+  if (pct >= 40)  return '#FF9933'
   return '#ef4444'
 }
 

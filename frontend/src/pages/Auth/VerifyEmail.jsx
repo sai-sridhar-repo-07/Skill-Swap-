@@ -31,13 +31,13 @@ export default function VerifyEmail() {
           animate={{ scale: [1, 1.2, 1], opacity: [0.06, 0.12, 0.06] }}
           transition={{ duration: 4, repeat: Infinity }}
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full blur-3xl"
-          style={{ background: status === 'success' ? '#FF6B00' : status === 'error' ? '#FF6B00' : '#FF6B00' }} />
+          style={{ background: status === 'success' ? '#FF9933' : status === 'error' ? '#FF9933' : '#FF9933' }} />
       </div>
 
       <motion.div initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }}
         transition={{ type: 'spring', damping: 20, stiffness: 300 }}
         className="card !p-8 text-center max-w-sm w-full relative overflow-hidden"
-        style={{ border: status === 'success' ? '1px solid rgba(255,107,0,0.25)' : status === 'error' ? '1px solid rgba(255,107,0,0.25)' : '1px solid rgba(255,107,0,0.2)' }}>
+        style={{ border: status === 'success' ? '1px solid rgba(255,153,51,0.25)' : status === 'error' ? '1px solid rgba(255,153,51,0.25)' : '1px solid rgba(255,153,51,0.2)' }}>
         <div className="absolute top-0 inset-x-0 h-0.5"
           style={{ background: status === 'success' ? 'linear-gradient(90deg, #CC5200, #FF8C00)' : status === 'error' ? 'linear-gradient(90deg, #E65C00, #FFAD5C)' : 'linear-gradient(90deg, #E65C00, #FF8C00)' }} />
 

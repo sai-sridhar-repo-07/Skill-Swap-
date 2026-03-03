@@ -22,7 +22,7 @@ export default function Login() {
     <div className="min-h-screen flex" style={{ background: 'var(--bg-primary)' }}>
       {/* Left decorative panel */}
       <div className="hidden lg:flex flex-1 relative overflow-hidden items-center justify-center p-12"
-        style={{ background: 'linear-gradient(135deg, rgba(255,107,0,0.12) 0%, rgba(255,173,92,0.08) 50%, rgba(255,107,0,0.08) 100%)' }}>
+        style={{ background: 'linear-gradient(135deg, rgba(255,153,51,0.12) 0%, rgba(255,179,71,0.08) 50%, rgba(255,153,51,0.08) 100%)' }}>
         <div className="absolute inset-0 bg-grid-dark opacity-50" />
         <motion.div animate={{ rotate: [0, 360] }} transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
           className="absolute w-96 h-96 rounded-full opacity-10 border border-coral-500/40" />

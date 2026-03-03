@@ -47,13 +47,13 @@ export default function SubscribeTeacher() {
         <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
           className="rounded-2xl overflow-hidden"
-          style={{ border: '1px solid rgba(255,107,0,0.25)' }}>
+          style={{ border: '1px solid rgba(255,153,51,0.25)' }}>
 
           {/* Header gradient */}
           <div className="p-8 text-center"
             style={{ background: 'linear-gradient(135deg, rgba(204,82,0,0.3) 0%, rgba(57,73,171,0.2) 100%)' }}>
             <div className="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center mb-4"
-              style={{ background: 'linear-gradient(135deg, #CC5200, #FF8C00)' }}>
+              style={{ background: 'linear-gradient(135deg, #CC6A00, #FF9933)' }}>
               <Star size={28} className="text-white fill-white" />
             </div>
             <h1 className="text-2xl font-black text-white mb-1">Teacher Subscription</h1>
@@ -72,7 +72,7 @@ export default function SubscribeTeacher() {
                 transition={{ delay: i * 0.07 }}
                 className="flex items-center gap-3">
                 <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
-                  style={{ background: 'rgba(255,107,0,0.12)' }}>
+                  style={{ background: 'rgba(255,153,51,0.12)' }}>
                   <Icon size={14} className="text-orange-400" />
                 </div>
                 <span className="text-sm text-white/80">{text}</span>
@@ -85,7 +85,7 @@ export default function SubscribeTeacher() {
                 onClick={handleSubscribe}
                 disabled={loading}
                 className="w-full py-3.5 rounded-xl font-bold text-white transition-all disabled:opacity-60 hover:opacity-90"
-                style={{ background: 'linear-gradient(135deg, #CC5200, #FF8C00)', boxShadow: '0 4px 20px rgba(255,107,0,0.3)' }}>
+                style={{ background: 'linear-gradient(135deg, #CC6A00, #FF9933)', boxShadow: '0 4px 20px rgba(255,153,51,0.3)' }}>
                 {loading ? 'Redirecting to checkout…' : 'Subscribe for $5/month'}
               </button>
 

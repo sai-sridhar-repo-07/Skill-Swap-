@@ -34,7 +34,7 @@ export default function Register() {
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <motion.div animate={{ x: [0, 30, 0], y: [0, -20, 0] }} transition={{ duration: 8, repeat: Infinity }}
           className="absolute top-1/4 right-1/4 w-80 h-80 rounded-full opacity-10 blur-3xl"
-          style={{ background: 'radial-gradient(circle, #FF6B00, transparent)' }} />
+          style={{ background: 'radial-gradient(circle, #FF9933, transparent)' }} />
         <motion.div animate={{ x: [0, -20, 0], y: [0, 30, 0] }} transition={{ duration: 10, repeat: Infinity, delay: 3 }}
           className="absolute bottom-1/4 left-1/4 w-80 h-80 rounded-full opacity-10 blur-3xl"
           style={{ background: 'radial-gradient(circle, #FFAD5C, transparent)' }} />
@@ -43,7 +43,7 @@ export default function Register() {
       <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         className="relative w-full max-w-md">
-        <div className="card !p-8 space-y-6" style={{ border: '1px solid rgba(255,107,0,0.2)', background: 'rgba(255,255,255,0.035)' }}>
+        <div className="card !p-8 space-y-6" style={{ border: '1px solid rgba(255,153,51,0.2)', background: 'rgba(255,255,255,0.035)' }}>
           <div className="text-center">
             <Link to="/" className="inline-block mb-4">
               <div className="w-12 h-12 rounded-2xl flex items-center justify-center font-black text-xl text-white mx-auto shadow-glow-fire"
@@ -53,7 +53,7 @@ export default function Register() {
             <p className="text-white/40 text-sm mt-1">Start your learning journey today</p>
             <motion.div whileHover={{ scale: 1.02 }}
               className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-orange-300"
-              style={{ background: 'rgba(255,107,0,0.1)', border: '1px solid rgba(255,107,0,0.25)' }}>
+              style={{ background: 'rgba(255,153,51,0.1)', border: '1px solid rgba(255,153,51,0.25)' }}>
               <Sparkles size={14} /> Get 10 free credits on signup!
             </motion.div>
           </div>

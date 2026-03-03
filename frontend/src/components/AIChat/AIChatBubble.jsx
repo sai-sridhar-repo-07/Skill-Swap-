@@ -58,7 +58,7 @@ export default function AIChatBubble() {
             className="w-[340px] h-[480px] flex flex-col rounded-2xl overflow-hidden shadow-2xl"
             style={{
               background: 'rgba(12, 14, 28, 0.97)',
-              border: '1px solid rgba(255,107,0,0.18)',
+              border: '1px solid rgba(255,153,51,0.18)',
               backdropFilter: 'blur(24px)',
             }}
           >
@@ -82,7 +82,7 @@ export default function AIChatBubble() {
                 <div key={i} className={`flex gap-2 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
                   {msg.role === 'assistant' && (
                     <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
-                      style={{ background: 'linear-gradient(135deg, #CC5200, #FF8C00)' }}>
+                      style={{ background: 'linear-gradient(135deg, #CC6A00, #FF9933)' }}>
                       <Bot size={13} className="text-white" />
                     </div>
                   )}
@@ -105,7 +105,7 @@ export default function AIChatBubble() {
               {loading && (
                 <div className="flex gap-2">
                   <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
-                    style={{ background: 'linear-gradient(135deg, #CC5200, #FF8C00)' }}>
+                    style={{ background: 'linear-gradient(135deg, #CC6A00, #FF9933)' }}>
                     <Bot size={13} className="text-white" />
                   </div>
                   <div className="flex items-center gap-1 px-3 py-2.5 rounded-2xl"
@@ -115,7 +115,7 @@ export default function AIChatBubble() {
                         animate={{ y: [0, -5, 0] }}
                         transition={{ duration: 0.7, repeat: Infinity, delay: i * 0.15 }}
                         className="w-1.5 h-1.5 rounded-full"
-                        style={{ background: '#FF8C00' }}
+                        style={{ background: '#FF9933' }}
                       />
                     ))}
                   </div>
@@ -144,7 +144,7 @@ export default function AIChatBubble() {
                 onClick={send}
                 disabled={!input.trim() || loading}
                 className="w-9 h-9 rounded-xl flex items-center justify-center disabled:opacity-30 transition-all"
-                style={{ background: 'linear-gradient(135deg, #CC5200, #FF8C00)' }}>
+                style={{ background: 'linear-gradient(135deg, #CC6A00, #FF9933)' }}>
                 <Send size={14} className="text-white" />
               </button>
             </div>
@@ -158,7 +158,7 @@ export default function AIChatBubble() {
         whileTap={{ scale: 0.94 }}
         onClick={() => setOpen((v) => !v)}
         className="w-14 h-14 rounded-full flex items-center justify-center shadow-xl relative"
-        style={{ background: 'linear-gradient(135deg, #CC5200, #FF8C00)', boxShadow: '0 4px 24px rgba(255,107,0,0.45)' }}>
+        style={{ background: 'linear-gradient(135deg, #CC6A00, #FF9933)', boxShadow: '0 4px 24px rgba(255,153,51,0.45)' }}>
         <AnimatePresence mode="wait">
           {open
             ? <motion.div key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.15 }}>
