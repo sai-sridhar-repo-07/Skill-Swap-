@@ -1,6 +1,7 @@
 const request = require('supertest')
 const mongoose = require('mongoose')
 const { app } = require('../src/app')
+const { connectMongoDB } = require('../src/config/database')
 
 // Mock postgres and redis for tests
 jest.mock('../src/config/postgres', () => ({
@@ -53,6 +54,7 @@ beforeAll(async () => {
   process.env.JWT_REFRESH_SECRET = 'test-refresh-key'
   process.env.JWT_EXPIRES_IN = '1h'
   process.env.NODE_ENV = 'test'
+  await connectMongoDB()
 })
 
 afterAll(async () => {

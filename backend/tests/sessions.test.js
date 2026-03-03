@@ -1,6 +1,7 @@
 const request = require('supertest')
 const mongoose = require('mongoose')
 const { app } = require('../src/app')
+const { connectMongoDB } = require('../src/config/database')
 
 jest.mock('../src/config/postgres', () => ({
   connectPostgres: jest.fn().mockResolvedValue(true),
@@ -52,6 +53,7 @@ beforeAll(async () => {
   process.env.JWT_SECRET = 'test-secret'
   process.env.JWT_REFRESH_SECRET = 'test-refresh'
   process.env.NODE_ENV = 'test'
+  await connectMongoDB()
 
   const host = await request(app).post('/api/auth/register')
     .send({ name: 'Host User', email: `host${Date.now()}@test.com`, password: 'Password123' })
