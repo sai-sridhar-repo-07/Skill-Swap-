@@ -30,9 +30,12 @@ const notificationRoutes = require('./routes/notifications');
 const app = express();
 const server = http.createServer(app);
 
-// Allow any localhost origin (any port) so Vite port-bumps never break dev
+// Allow localhost (any port) + production CLIENT_URL
+const CLIENT_URL = (process.env.CLIENT_URL || '').replace(/\/$/, ''); // strip trailing slash
 const isAllowedOrigin = (origin) =>
-  !origin || /^http:\/\/localhost(:\d+)?$/.test(origin);
+  !origin ||
+  /^http:\/\/localhost(:\d+)?$/.test(origin) ||
+  (CLIENT_URL && origin === CLIENT_URL);
 
 const io = new Server(server, {
   cors: { origin: isAllowedOrigin, methods: ['GET', 'POST'], credentials: true },
