@@ -30,11 +30,12 @@ const notificationRoutes = require('./routes/notifications');
 const app = express();
 const server = http.createServer(app);
 
-// Allow localhost (any port) + production CLIENT_URL
-const CLIENT_URL = (process.env.CLIENT_URL || '').replace(/\/$/, ''); // strip trailing slash
+// Allow localhost (any port) + any *.netlify.app + explicit CLIENT_URL
+const CLIENT_URL = (process.env.CLIENT_URL || '').replace(/\/$/, '');
 const isAllowedOrigin = (origin) =>
   !origin ||
   /^http:\/\/localhost(:\d+)?$/.test(origin) ||
+  /\.netlify\.app$/.test(origin) ||
   (CLIENT_URL && origin === CLIENT_URL);
 
 const io = new Server(server, {
