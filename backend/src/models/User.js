@@ -39,6 +39,10 @@ const userSchema = new mongoose.Schema({
   isBanned: { type: Boolean, default: false },
   banReason: String,
   profileShareSlug: { type: String, unique: true, sparse: true },
+  stripeCustomerId: { type: String, select: false },
+  stripeSubscriptionId: { type: String, select: false },
+  isTeacherSubscribed: { type: Boolean, default: false },
+  subscriptionExpiresAt: { type: Date },
 }, {
   timestamps: true,
   toJSON: { virtuals: true },

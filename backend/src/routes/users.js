@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {
   getProfile, getProfileBySlug, updateProfile, uploadAvatar,
-  getMyTransactions, bookmarkSession, searchTeachers, getSkillSuggestions,
+  getMyTransactions, bookmarkSession, searchTeachers, getSkillSuggestions, getUserStats,
 } = require('../controllers/userController');
 const { protect } = require('../middleware/auth');
 const { validate, schemas } = require('../middleware/validate');
@@ -41,6 +41,8 @@ router.patch('/me', protect, validate(schemas.updateProfile), updateProfile);
 router.post('/me/avatar', protect, upload.single('avatar'), uploadAvatar);
 router.get('/me/transactions', protect, getMyTransactions);
 router.post('/me/bookmarks/:sessionId', protect, bookmarkSession);
+// Stats before /:id to avoid route shadowing
+router.get('/:id/stats', getUserStats);
 // Parameterized route last
 router.get('/:id', getProfile);
 

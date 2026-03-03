@@ -1,14 +1,24 @@
-import { useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { Plus, ArrowRight, TrendingUp } from 'lucide-react'
+import { Plus, ArrowRight, TrendingUp, Search, Edit3 } from 'lucide-react'
 import { useAuthStore } from '../store/authStore'
 import { sessionService, userService } from '../services/sessionService'
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 import SessionCard from '../components/session/SessionCard'
 import { Skeleton } from '../components/ui/Skeleton'
 import { formatCredits, formatDate, timeAgo } from '../utils/helpers'
+import ProfileCompletionRing from '../components/profile/ProfileCompletionRing'
+import TeacherStatsBar from '../components/profile/TeacherStatsBar'
+import CreditTopupModal from '../components/payments/CreditTopupModal'
+import api from '../services/api'
+
+const QUICK_ACTIONS = [
+  { label: 'Create Session', icon: Plus,   to: '/sessions/create', color: 'rgba(255,107,0,0.15)', border: 'rgba(255,107,0,0.3)' },
+  { label: 'Browse',         icon: Search, to: '/sessions',        color: 'rgba(57,73,171,0.15)',  border: 'rgba(57,73,171,0.3)' },
+  { label: 'Edit Profile',   icon: Edit3,  to: '/profile/edit',    color: 'rgba(255,255,255,0.05)', border: 'rgba(255,255,255,0.1)' },
+]
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -33,14 +43,22 @@ const STATS = (user, hosted, booked) => [
 
 export default function Dashboard() {
   const { user, refreshUser } = useAuthStore()
+  const [showTopup, setShowTopup] = useState(false)
   const { data: hostedData, isLoading: loadingHosted } = useQuery({ queryKey: ['myHosted'], queryFn: () => sessionService.getMyHosted() })
   const { data: bookedData, isLoading: loadingBooked } = useQuery({ queryKey: ['myBooked'], queryFn: () => sessionService.getMyBooked() })
   const { data: txData } = useQuery({ queryKey: ['transactions'], queryFn: () => userService.getTransactions({ limit: 5 }) })
+  const { data: statsData } = useQuery({
+    queryKey: ['myStats', user?._id],
+    queryFn: () => api.get(`/users/${user._id}/stats`),
+    enabled: !!user?._id,
+  })
   useEffect(() => { refreshUser() }, [])
 
-  const hosted       = hostedData?.data?.data?.sessions || []
-  const booked       = bookedData?.data?.data?.sessions || []
-  const transactions = txData?.data?.data?.transactions || []
+  const hosted          = hostedData?.data?.data?.sessions || []
+  const booked          = bookedData?.data?.data?.sessions || []
+  const transactions    = txData?.data?.data?.transactions || []
+  const completionPct   = statsData?.data?.data?.completionPct || 0
+  const lowCredits      = (user?.creditsBalance || 0) < 5
   const upcoming     = booked.filter((s) => s.status === 'upcoming').slice(0, 3)
   const completed    = [...hosted, ...booked].filter((s) => s.status === 'completed')
 
@@ -55,19 +73,63 @@ export default function Dashboard() {
   const stats = STATS(user, hosted, booked)
 
   return (
+    <>
+    {showTopup && <CreditTopupModal onClose={() => setShowTopup(false)} />}
     <motion.div initial="hidden" animate="visible" className="page-container space-y-8">
       {/* Header */}
-      <motion.div variants={fadeUp} custom={0} className="flex items-center justify-between">
-        <div>
+      <motion.div variants={fadeUp} custom={0} className="flex items-start justify-between gap-4">
+        <div className="flex-1 min-w-0">
           <h1 className="text-3xl font-black text-white">
             Hey, <span className="gradient-text">{user?.name?.split(' ')[0]}</span> 👋
           </h1>
           <p className="text-white/40 mt-1 text-sm">Here's your learning command center</p>
         </div>
-        <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
-          <Link to="/sessions/create" className="btn-primary flex items-center gap-2 hidden sm:flex">
-            <Plus size={17} /> New Session
+        <div className="flex items-center gap-3">
+          <ProfileCompletionRing pct={completionPct} size={80} />
+          <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+            <Link to="/sessions/create" className="btn-primary flex items-center gap-2 hidden sm:flex">
+              <Plus size={17} /> New Session
+            </Link>
+          </motion.div>
+        </div>
+      </motion.div>
+
+      {/* Low credits warning */}
+      <AnimatePresence>
+        {lowCredits && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+            className="flex items-center justify-between p-4 rounded-2xl"
+            style={{ background: 'rgba(255,107,0,0.1)', border: '1px solid rgba(255,107,0,0.3)', boxShadow: '0 0 20px rgba(255,107,0,0.2)' }}>
+            <p className="text-sm text-orange-300 font-semibold">
+              ⚡ You have {user?.creditsBalance || 0} credits left — top up to keep booking sessions!
+            </p>
+            <button onClick={() => setShowTopup(true)}
+              className="text-xs font-bold text-white px-3 py-1.5 rounded-xl ml-4"
+              style={{ background: 'linear-gradient(135deg, #CC5200, #FF8C00)' }}>
+              Buy Credits
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Quick actions */}
+      <motion.div variants={fadeUp} custom={0.5} className="flex gap-3 flex-wrap">
+        {QUICK_ACTIONS.map(({ label, icon: Icon, to, color, border }) => (
+          <Link key={label} to={to}>
+            <motion.div whileHover={{ y: -3, scale: 1.02 }} whileTap={{ scale: 0.97 }}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-all"
+              style={{ background: color, border: `1px solid ${border}` }}>
+              <Icon size={14} /> {label}
+            </motion.div>
           </Link>
+        ))}
+        <motion.div whileHover={{ y: -3, scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+          <button onClick={() => setShowTopup(true)}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-all"
+            style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.25)' }}>
+            ⚡ Buy Credits
+          </button>
         </motion.div>
       </motion.div>
 
@@ -172,6 +234,14 @@ export default function Dashboard() {
         )}
       </motion.div>
 
+      {/* Teacher Stats (shown if any hosted sessions) */}
+      {hosted.length > 0 && user?._id && (
+        <motion.div variants={fadeUp} custom={7.5}>
+          <h2 className="text-sm font-bold text-white/40 uppercase tracking-wider mb-3">Teaching Stats</h2>
+          <TeacherStatsBar userId={user._id} />
+        </motion.div>
+      )}
+
       {/* Hosted Sessions */}
       {hosted.length > 0 && (
         <motion.div variants={fadeUp} custom={8}>
@@ -186,5 +256,6 @@ export default function Dashboard() {
         </motion.div>
       )}
     </motion.div>
+    </>
   )
 }

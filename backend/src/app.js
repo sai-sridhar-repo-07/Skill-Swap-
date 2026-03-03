@@ -26,6 +26,9 @@ const sessionRoutes = require('./routes/sessions');
 const reviewRoutes = require('./routes/reviews');
 const adminRoutes = require('./routes/admin');
 const notificationRoutes = require('./routes/notifications');
+const chatRoutes = require('./routes/chat');
+const paymentRoutes = require('./routes/payments');
+const { handleWebhook } = require('./controllers/paymentController');
 
 const app = express();
 const server = http.createServer(app);
@@ -54,6 +57,9 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
+// Stripe webhook MUST receive raw body — mount before express.json()
+app.post('/api/payments/webhook', express.raw({ type: 'application/json' }), handleWebhook);
+
 // Body parsing
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
@@ -81,6 +87,8 @@ app.use('/api/sessions', sessionRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/chat', chatRoutes);
+app.use('/api/payments', paymentRoutes);
 
 // 404 Handler
 app.use('*', (req, res) => {

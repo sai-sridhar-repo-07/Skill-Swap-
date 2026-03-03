@@ -1,12 +1,33 @@
-import { useRef } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform, useInView, animate } from 'framer-motion'
 import { useQuery } from '@tanstack/react-query'
-import { ArrowRight, Zap, Users, Star, Shield, Video, MessageSquare, Sparkles, TrendingUp, Globe } from 'lucide-react'
+import { ArrowRight, Zap, Star, Sparkles, TrendingUp, CheckCircle } from 'lucide-react'
 import { sessionService } from '../services/sessionService'
 import SessionCard from '../components/session/SessionCard'
 import Navbar from '../components/layout/Navbar'
 import { useAuthStore } from '../store/authStore'
+import CreditTopupModal from '../components/payments/CreditTopupModal'
+
+function CountUp({ to, suffix = '', duration = 1.5 }) {
+  const [val, setVal] = useState(0)
+  const ref = useRef()
+  const inView = useInView(ref, { once: true })
+  useEffect(() => {
+    if (!inView) return
+    const ctrl = animate(0, to, { duration, ease: 'easeOut', onUpdate: (v) => setVal(Math.round(v)) })
+    return () => ctrl.stop()
+  }, [inView, to])
+  return <span ref={ref}>{val.toLocaleString()}{suffix}</span>
+}
+
+const PRICING_PACKS = [
+  { credits: 10,  price: '$2',  label: 'Starter' },
+  { credits: 25,  price: '$4',  label: 'Popular' },
+  { credits: 50,  price: '$7',  label: 'Best Value', highlight: true },
+  { credits: 100, price: '$12', label: 'Power User' },
+]
+const TEACHER_BENEFITS = ['Priority search ranking', 'Verified badge', 'Earnings analytics', 'Unlimited sessions']
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -34,14 +55,15 @@ const FEATURES = [
 ]
 
 const STATS = [
-  { value: '10K+', label: 'Active learners', icon: '🧑‍🎓', color: 'text-coral-400' },
-  { value: '5K+', label: 'Sessions done', icon: '✅', color: 'text-orange-300' },
-  { value: '500+', label: 'Expert teachers', icon: '🎓', color: 'text-cyan-400' },
-  { value: '4.9★', label: 'Avg rating', icon: '⭐', color: 'text-yellow-500' },
+  { to: 10000, suffix: '+', label: 'Active learners', icon: '🧑‍🎓', color: 'text-coral-400' },
+  { to: 5000,  suffix: '+', label: 'Sessions done',   icon: '✅', color: 'text-orange-300' },
+  { to: 500,   suffix: '+', label: 'Expert teachers', icon: '🎓', color: 'text-cyan-400' },
+  { to: 4.9,   suffix: '★', label: 'Avg rating',      icon: '⭐', color: 'text-yellow-500' },
 ]
 
 export default function Home() {
   const { isAuthenticated } = useAuthStore()
+  const [showTopup, setShowTopup] = useState(false)
   const heroRef = useRef()
   const { scrollY } = useScroll()
   const heroY = useTransform(scrollY, [0, 400], [0, 80])
@@ -54,6 +76,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen overflow-hidden" style={{ background: 'var(--bg-primary)' }}>
+      {showTopup && <CreditTopupModal onClose={() => setShowTopup(false)} />}
       <Navbar />
 
       {/* ── HERO ─────────────────────────────────────── */}
@@ -158,7 +181,9 @@ export default function Home() {
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
                 className="card text-center space-y-1 neon-border-fire hover:shadow-glow-fire transition-shadow">
                 <div className="text-2xl mb-1">{s.icon}</div>
-                <div className={`text-3xl font-black ${s.color}`}>{s.value}</div>
+                <div className={`text-3xl font-black ${s.color}`}>
+                  <CountUp to={s.to} suffix={s.suffix} />
+                </div>
                 <div className="text-xs text-white/40">{s.label}</div>
               </motion.div>
             ))}
@@ -254,6 +279,80 @@ export default function Home() {
           </div>
         </section>
       )}
+
+      {/* ── PRICING ──────────────────────────────────── */}
+      <section className="py-20 px-4">
+        <div className="max-w-5xl mx-auto">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}
+            className="text-center mb-12">
+            <motion.p variants={fadeUp} className="pill-fire mb-3 inline-block">💰 Simple Pricing</motion.p>
+            <motion.h2 variants={fadeUp} className="text-4xl font-black text-white">Credits & Subscriptions</motion.h2>
+            <motion.p variants={fadeUp} className="text-white/40 mt-3">Buy credits to learn. Subscribe to teach at scale.</motion.p>
+          </motion.div>
+
+          <div className="grid lg:grid-cols-2 gap-8">
+            {/* Credit packs */}
+            <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
+              className="rounded-2xl p-6 space-y-4"
+              style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,107,0,0.2)' }}>
+              <div className="flex items-center gap-2 mb-2">
+                <Zap size={18} className="text-orange-400" />
+                <h3 className="font-bold text-white">Credit Packs</h3>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                {PRICING_PACKS.map((pack) => (
+                  <motion.div key={pack.credits} whileHover={{ scale: 1.03 }} className="relative p-3 rounded-xl"
+                    style={{ background: pack.highlight ? 'rgba(255,107,0,0.12)' : 'rgba(255,255,255,0.04)', border: `1px solid ${pack.highlight ? 'rgba(255,107,0,0.4)' : 'rgba(255,255,255,0.08)'}` }}>
+                    {pack.highlight && (
+                      <span className="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full text-[9px] font-bold text-white"
+                        style={{ background: 'linear-gradient(135deg, #CC5200, #FF8C00)' }}>
+                        ★ Best
+                      </span>
+                    )}
+                    <div className="text-xl font-black text-white">{pack.credits}</div>
+                    <div className="text-[10px] text-white/40">credits</div>
+                    <div className="text-base font-bold text-orange-400 mt-1">{pack.price}</div>
+                    <div className="text-[10px] text-white/30">{pack.label}</div>
+                  </motion.div>
+                ))}
+              </div>
+              <button onClick={() => setShowTopup(true)}
+                className="w-full py-2.5 rounded-xl text-sm font-bold text-white mt-2 transition-all hover:opacity-90"
+                style={{ background: 'linear-gradient(135deg, #CC5200, #FF8C00)' }}>
+                Buy Credits
+              </button>
+            </motion.div>
+
+            {/* Teacher subscription */}
+            <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
+              className="rounded-2xl p-6 space-y-4"
+              style={{ background: 'rgba(57,73,171,0.08)', border: '1px solid rgba(57,73,171,0.3)' }}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Star size={18} className="text-yellow-400 fill-yellow-400" />
+                  <h3 className="font-bold text-white">Teacher Plan</h3>
+                </div>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-3xl font-black text-white">$5</span>
+                  <span className="text-white/40 text-sm">/mo</span>
+                </div>
+              </div>
+              <div className="space-y-2">
+                {TEACHER_BENEFITS.map((b) => (
+                  <div key={b} className="flex items-center gap-2 text-sm text-white/70">
+                    <CheckCircle size={13} className="text-green-400 flex-shrink-0" /> {b}
+                  </div>
+                ))}
+              </div>
+              <Link to={isAuthenticated ? '/subscribe-teacher' : '/register'}
+                className="block w-full py-2.5 rounded-xl text-sm font-bold text-white text-center transition-all hover:opacity-90"
+                style={{ background: 'linear-gradient(135deg, #1A237E, #3949AB)' }}>
+                {isAuthenticated ? 'Subscribe to Teach' : 'Start Teaching Free'}
+              </Link>
+            </motion.div>
+          </div>
+        </div>
+      </section>
 
       {/* ── CTA BANNER ───────────────────────────────── */}
       {!isAuthenticated && (

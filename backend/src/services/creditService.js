@@ -8,6 +8,8 @@ const TRANSACTION_TYPES = {
   TEACHING: 'teaching',
   REFUND: 'refund',
   ADMIN_ADJUST: 'admin_adjust',
+  STRIPE_TOPUP: 'stripe_topup',
+  TEACHER_SUB: 'teacher_subscription',
 };
 
 const initializeLedger = async () => {

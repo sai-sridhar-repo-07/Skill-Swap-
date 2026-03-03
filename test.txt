@@ -1,0 +1,3 @@
+mongodb+srv://<tarrasridhar1154>:<ct8NpxAkLnRbITIG>@cluster0.smeafud.mongodb.net/?appName=Cluster0
+
+ct8NpxAkLnRbITIG

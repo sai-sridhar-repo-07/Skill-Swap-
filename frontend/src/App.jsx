@@ -7,6 +7,7 @@ import Layout from './components/layout/Layout'
 import PageLoader from './components/common/PageLoader'
 import ErrorBoundary from './components/common/ErrorBoundary'
 import { useSocket } from './hooks/useSocket'
+import AIChatBubble from './components/AIChat/AIChatBubble'
 
 const Home = lazy(() => import('./pages/Home'))
 const Login = lazy(() => import('./pages/Auth/Login'))
@@ -23,6 +24,7 @@ const CreateSession = lazy(() => import('./pages/Sessions/CreateSession'))
 const SessionRoom = lazy(() => import('./pages/Sessions/SessionRoom'))
 const AdminDashboard = lazy(() => import('./pages/Admin/AdminDashboard'))
 const AdminUsers = lazy(() => import('./pages/Admin/AdminUsers'))
+const SubscribeTeacher = lazy(() => import('./pages/SubscribeTeacher'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
 const ProtectedRoute = ({ children }) => {
@@ -67,6 +69,7 @@ export default function App() {
   return (
     <ErrorBoundary>
       {isAuthenticated && <SocketInit />}
+      <AIChatBubble />
       <Suspense fallback={<PageLoader />}>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -82,6 +85,7 @@ export default function App() {
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/profile/edit" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
             <Route path="/sessions/create" element={<ProtectedRoute><CreateSession /></ProtectedRoute>} />
+          <Route path="/subscribe-teacher" element={<ProtectedRoute><SubscribeTeacher /></ProtectedRoute>} />
           </Route>
           <Route path="/sessions/:id/room" element={<ProtectedRoute><SessionRoom /></ProtectedRoute>} />
           <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />

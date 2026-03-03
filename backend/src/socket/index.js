@@ -4,6 +4,9 @@ const { registerUserSocket, removeUserSocket } = require('../services/notificati
 const { logger } = require('../utils/logger');
 
 const initSocket = (io) => {
+  // roomId → Map<userId(string), socketId>
+  const roomParticipants = new Map();
+
   io.use(async (socket, next) => {
     try {
       const token = socket.handshake.auth?.token ||
@@ -27,6 +30,8 @@ const initSocket = (io) => {
     // WebRTC Signaling
     socket.on('join-room', ({ roomId }) => {
       socket.join(roomId);
+      if (!roomParticipants.has(roomId)) roomParticipants.set(roomId, new Map());
+      roomParticipants.get(roomId).set(socket.user._id.toString(), socket.id);
       socket.to(roomId).emit('user-joined', {
         userId: socket.user._id,
         name: socket.user.name,
@@ -37,19 +42,29 @@ const initSocket = (io) => {
 
     socket.on('leave-room', ({ roomId }) => {
       socket.leave(roomId);
+      roomParticipants.get(roomId)?.delete(socket.user._id.toString());
       socket.to(roomId).emit('user-left', { userId: socket.user._id });
     });
 
     socket.on('offer', ({ roomId, offer, targetId }) => {
-      socket.to(roomId).emit('offer', { offer, from: socket.user._id, name: socket.user.name });
+      const targetSocketId = roomParticipants.get(roomId)?.get(String(targetId));
+      if (targetSocketId) {
+        io.to(targetSocketId).emit('offer', { offer, from: socket.user._id, name: socket.user.name });
+      }
     });
 
     socket.on('answer', ({ roomId, answer, targetId }) => {
-      socket.to(roomId).emit('answer', { answer, from: socket.user._id });
+      const targetSocketId = roomParticipants.get(roomId)?.get(String(targetId));
+      if (targetSocketId) {
+        io.to(targetSocketId).emit('answer', { answer, from: socket.user._id });
+      }
     });
 
-    socket.on('ice-candidate', ({ roomId, candidate }) => {
-      socket.to(roomId).emit('ice-candidate', { candidate, from: socket.user._id });
+    socket.on('ice-candidate', ({ roomId, candidate, targetId }) => {
+      const targetSocketId = roomParticipants.get(roomId)?.get(String(targetId));
+      if (targetSocketId) {
+        io.to(targetSocketId).emit('ice-candidate', { candidate, from: socket.user._id });
+      }
     });
 
     // Chat
@@ -99,6 +114,14 @@ const initSocket = (io) => {
     socket.on('disconnect', () => {
       logger.info(`Socket disconnected: ${socket.user.name}`);
       removeUserSocket(socket.user._id);
+      // Clean up from all rooms this socket was in
+      const uid = socket.user._id.toString();
+      roomParticipants.forEach((participants, roomId) => {
+        if (participants.get(uid) === socket.id) {
+          participants.delete(uid);
+          if (participants.size === 0) roomParticipants.delete(roomId);
+        }
+      });
     });
   });
 };

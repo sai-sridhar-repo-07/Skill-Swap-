@@ -94,7 +94,7 @@ export default function SessionRoom() {
 
     pc.ontrack = (e) => setRemoteStreams((s) => ({ ...s, [remoteId]: e.streams[0] }))
     pc.onicecandidate = (e) => {
-      if (e.candidate) getSocket()?.emit('ice-candidate', { roomId: id, candidate: e.candidate })
+      if (e.candidate) getSocket()?.emit('ice-candidate', { roomId: id, candidate: e.candidate, targetId: remoteId })
     }
     return pc
   }, [id])

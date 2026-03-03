@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Session = require('../models/Session');
 const { getBalanceFull, getTransactionHistory } = require('../services/creditService');
 const { sanitizeUser, paginate } = require('../utils/helpers');
 const { NotFoundError } = require('../utils/errors');
@@ -110,4 +111,36 @@ const getSkillSuggestions = async (req, res, next) => {
   } catch (error) { next(error); }
 };
 
-module.exports = { getProfile, getProfileBySlug, updateProfile, uploadAvatar, getMyTransactions, bookmarkSession, searchTeachers, getSkillSuggestions };
+const getUserStats = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id).select('avatar bio skillsOffered availability rating totalReviews badges streak');
+    if (!user || !user.isActive) throw new NotFoundError('User not found');
+
+    const sessionsCompleted = await Session.countDocuments({ hostId: req.params.id, status: 'completed' });
+
+    // Profile completionPct: 5 checkpoints × 20% each
+    let completionPct = 0;
+    if (user.avatar) completionPct += 20;
+    if (user.bio && user.bio.length > 20) completionPct += 20;
+    if (user.skillsOffered && user.skillsOffered.length > 0) completionPct += 20;
+    if (user.availability && user.availability.length > 0) completionPct += 20;
+    if (user.rating > 0) completionPct += 20;
+
+    const topSkills = (user.skillsOffered || []).slice(0, 3).map((s) => ({ name: s.name, level: s.level }));
+
+    res.json({
+      status: 'success',
+      data: {
+        sessionsCompleted,
+        rating: user.rating,
+        totalReviews: user.totalReviews,
+        topSkills,
+        badges: user.badges || [],
+        streak: user.streak || 0,
+        completionPct,
+      },
+    });
+  } catch (error) { next(error); }
+};
+
+module.exports = { getProfile, getProfileBySlug, updateProfile, uploadAvatar, getMyTransactions, bookmarkSession, searchTeachers, getSkillSuggestions, getUserStats };

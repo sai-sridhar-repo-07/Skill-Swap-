@@ -29,6 +29,8 @@ const TAG_STYLES = [
 ]
 const tagStyle = (str) => TAG_STYLES[(str?.charCodeAt(0) || 0) % TAG_STYLES.length]
 
+const LEVEL_ICONS = { Beginner: '🌱', Intermediate: '🔥', Advanced: '⚡' }
+
 export default function SessionCard({ session }) {
   const { _id, title, description, skillTag, level, duration, creditCost,
     maxSeats, bookedUsers = [], status, startTime, hostId } = session
@@ -37,12 +39,17 @@ export default function SessionCard({ session }) {
   const statusS    = STATUS_STYLES[status] || STATUS_STYLES.upcoming
   const levelPill  = LEVEL_PILLS[level] || 'pill-ocean'
   const ts         = tagStyle(skillTag)
+  const isLive     = status === 'live'
+  const urgentSeat = seatsLeft > 0 && seatsLeft <= 2
 
   return (
     <motion.div
       whileHover={{ y: -6, transition: { duration: 0.2, ease: 'easeOut' } }}
       className="card flex flex-col gap-3 h-full cursor-pointer group"
-      style={{ border: '1px solid rgba(255,107,0,0.1)' }}>
+      style={{
+        border: isLive ? '1px solid rgba(255,107,0,0.4)' : '1px solid rgba(255,107,0,0.1)',
+        boxShadow: isLive ? '0 0 20px rgba(255,107,0,0.15)' : undefined,
+      }}>
 
       {/* Top row: status + cost */}
       <div className="flex items-start justify-between">
@@ -51,7 +58,9 @@ export default function SessionCard({ session }) {
             <span className={`w-1.5 h-1.5 rounded-full ${statusS.dot}`} />
             {status}
           </span>
-          <span className={levelPill}>{level}</span>
+          <span className={`${levelPill} flex items-center gap-1`}>
+            <span>{LEVEL_ICONS[level]}</span>{level}
+          </span>
         </div>
         <motion.div whileHover={{ scale: 1.1 }}
           className="flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-bold text-white"
@@ -73,6 +82,15 @@ export default function SessionCard({ session }) {
         style={{ background: ts.bg, borderColor: ts.border, color: ts.color }}>
         #{skillTag}
       </span>
+
+      {/* Seat urgency */}
+      {urgentSeat && (
+        <motion.p
+          animate={{ opacity: [1, 0.5, 1] }} transition={{ duration: 1.2, repeat: Infinity }}
+          className="text-[11px] font-bold text-orange-400 flex items-center gap-1">
+          🔥 Only {seatsLeft} seat{seatsLeft > 1 ? 's' : ''} left!
+        </motion.p>
+      )}
 
       {/* Meta */}
       <div className="flex items-center gap-3 text-[11px] text-white/35">
