@@ -4,6 +4,10 @@ const { logger } = require('../utils/logger');
 let redisClient = null;
 
 const connectRedis = async () => {
+  if (!process.env.REDIS_URL) {
+    logger.warn('REDIS_URL not set — cache disabled, continuing without Redis');
+    return null;
+  }
   let client = null;
   try {
     client = createClient({
@@ -29,7 +33,7 @@ const connectRedis = async () => {
   } catch (error) {
     logger.warn(`Redis unavailable (continuing without cache): ${error.message}`);
     // Force-close so the abandoned TCP socket doesn't linger
-    if (client) { try { client.disconnect(); } catch {} }
+    if (client) { client.disconnect().catch(() => {}); }
     redisClient = null;
     return null;
   }
