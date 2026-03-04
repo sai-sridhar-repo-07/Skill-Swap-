@@ -31,7 +31,27 @@ const initSocket = (io) => {
     socket.on('join-room', ({ roomId }) => {
       socket.join(roomId);
       if (!roomParticipants.has(roomId)) roomParticipants.set(roomId, new Map());
-      roomParticipants.get(roomId).set(socket.user._id.toString(), socket.id);
+      const room = roomParticipants.get(roomId);
+
+      // Collect existing participants BEFORE adding current user
+      const existing = [];
+      room.forEach((info, userId) => {
+        existing.push({ userId, name: info.name, avatar: info.avatar });
+      });
+
+      // Store full user info (needed for reconnect scenarios)
+      room.set(socket.user._id.toString(), {
+        socketId: socket.id,
+        name: socket.user.name,
+        avatar: socket.user.avatar,
+      });
+
+      // Tell new joiner who's already in the room
+      if (existing.length > 0) {
+        socket.emit('existing-participants', existing);
+      }
+
+      // Tell everyone else that a new user joined
       socket.to(roomId).emit('user-joined', {
         userId: socket.user._id,
         name: socket.user.name,
@@ -47,23 +67,23 @@ const initSocket = (io) => {
     });
 
     socket.on('offer', ({ roomId, offer, targetId }) => {
-      const targetSocketId = roomParticipants.get(roomId)?.get(String(targetId));
-      if (targetSocketId) {
-        io.to(targetSocketId).emit('offer', { offer, from: socket.user._id, name: socket.user.name });
+      const targetInfo = roomParticipants.get(roomId)?.get(String(targetId));
+      if (targetInfo) {
+        io.to(targetInfo.socketId).emit('offer', { offer, from: socket.user._id, name: socket.user.name });
       }
     });
 
     socket.on('answer', ({ roomId, answer, targetId }) => {
-      const targetSocketId = roomParticipants.get(roomId)?.get(String(targetId));
-      if (targetSocketId) {
-        io.to(targetSocketId).emit('answer', { answer, from: socket.user._id });
+      const targetInfo = roomParticipants.get(roomId)?.get(String(targetId));
+      if (targetInfo) {
+        io.to(targetInfo.socketId).emit('answer', { answer, from: socket.user._id });
       }
     });
 
     socket.on('ice-candidate', ({ roomId, candidate, targetId }) => {
-      const targetSocketId = roomParticipants.get(roomId)?.get(String(targetId));
-      if (targetSocketId) {
-        io.to(targetSocketId).emit('ice-candidate', { candidate, from: socket.user._id });
+      const targetInfo = roomParticipants.get(roomId)?.get(String(targetId));
+      if (targetInfo) {
+        io.to(targetInfo.socketId).emit('ice-candidate', { candidate, from: socket.user._id });
       }
     });
 
@@ -114,11 +134,13 @@ const initSocket = (io) => {
     socket.on('disconnect', () => {
       logger.info(`Socket disconnected: ${socket.user.name}`);
       removeUserSocket(socket.user._id);
-      // Clean up from all rooms this socket was in
+      // Clean up from all rooms this socket was in and notify peers
       const uid = socket.user._id.toString();
       roomParticipants.forEach((participants, roomId) => {
-        if (participants.get(uid) === socket.id) {
+        if (participants.get(uid)?.socketId === socket.id) {
           participants.delete(uid);
+          // Notify remaining participants so they can clean up the peer connection
+          socket.to(roomId).emit('user-left', { userId: socket.user._id });
           if (participants.size === 0) roomParticipants.delete(roomId);
         }
       });

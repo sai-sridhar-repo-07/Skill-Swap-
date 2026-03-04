@@ -138,6 +138,23 @@ export default function SessionRoom() {
       sock.emit('join-room', { roomId: id })
       toast('You joined the room 🚀', { duration: 3000 })
 
+      // Re-join room on every reconnect (handles mobile drops, Render cold starts)
+      sock.on('connect', () => {
+        sock.emit('join-room', { roomId: id })
+      })
+
+      // Server sends existing participants when we join a non-empty room
+      sock.on('existing-participants', (existingUsers) => {
+        setParticipants(existingUsers)
+        existingUsers.forEach(({ userId }) => {
+          const pc = createPeerConnection(userId)
+          pc.createOffer()
+            .then((offer) => pc.setLocalDescription(offer)
+              .then(() => sock.emit('offer', { roomId: id, offer, targetId: userId })))
+            .catch(() => {})
+        })
+      })
+
       sock.on('user-joined', ({ userId, name, avatar }) => {
         setParticipants((p) => [...p.filter((x) => x.userId !== userId), { userId, name, avatar }])
         toast(`${name} joined`, { icon: '👋', duration: 3000 })
@@ -213,9 +230,10 @@ export default function SessionRoom() {
 
       cleanupFn = () => {
         sock.emit('leave-room', { roomId: id })
-        ;['user-joined','user-left','chat-message','hand-raised','hand-lowered',
-          'session-ended','removed-from-room','offer','answer','ice-candidate',
-          'whiteboard-draw','whiteboard-clear'].forEach((e) => sock.off(e))
+        ;['connect','existing-participants','user-joined','user-left','chat-message',
+          'hand-raised','hand-lowered','session-ended','removed-from-room',
+          'offer','answer','ice-candidate','whiteboard-draw','whiteboard-clear']
+          .forEach((e) => sock.off(e))
         Object.values(peerConnections.current).forEach((pc) => pc.close())
       }
     }
