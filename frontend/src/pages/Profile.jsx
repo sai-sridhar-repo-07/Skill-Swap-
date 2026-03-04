@@ -130,15 +130,21 @@ export default function Profile() {
         {/* Profile Header */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           className="card" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
-          {/* Animated gradient banner with orbs */}
+          {/* Animated tricolour banner — Saffron · White · Green */}
           <div className="h-24 rounded-xl mb-4 relative overflow-hidden"
-            style={{ background: 'linear-gradient(135deg, rgba(255,153,51,0.2), rgba(57,73,171,0.15), rgba(255,179,71,0.1))' }}>
+            style={{ background: 'linear-gradient(135deg, rgba(255,153,51,0.22), rgba(255,255,255,0.06), rgba(19,136,8,0.18))' }}>
+            {/* Saffron orb */}
             <motion.div animate={{ scale: [1, 1.3, 1], x: [0, 20, 0] }} transition={{ duration: 7, repeat: Infinity }}
-              className="absolute top-2 left-8 w-20 h-20 rounded-full blur-2xl opacity-50"
+              className="absolute top-2 left-8 w-20 h-20 rounded-full blur-2xl opacity-55"
               style={{ background: '#FF9933' }} />
+            {/* India Green orb */}
             <motion.div animate={{ scale: [1.2, 1, 1.2], x: [0, -15, 0] }} transition={{ duration: 9, repeat: Infinity, delay: 2 }}
-              className="absolute bottom-0 right-16 w-16 h-16 rounded-full blur-2xl opacity-40"
-              style={{ background: '#3949AB' }} />
+              className="absolute bottom-0 right-16 w-16 h-16 rounded-full blur-2xl opacity-45"
+              style={{ background: '#138808' }} />
+            {/* White/Ashoka centre glow */}
+            <motion.div animate={{ opacity: [0.15, 0.3, 0.15] }} transition={{ duration: 5, repeat: Infinity, delay: 1 }}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full blur-3xl"
+              style={{ background: '#FFFFFF' }} />
           </div>
           <div className="flex items-start gap-5 -mt-12 px-1">
             <div className="flex-shrink-0" style={{ outline: '3px solid #0a0a0f', borderRadius: '50%' }}>

@@ -57,6 +57,8 @@ export default function SessionRoom() {
 
   // WebRTC
   const peerConnections = useRef({})
+  // true once getUserMedia resolves (success OR denied) — gate for join-room
+  const [cameraReady, setCameraReady] = useState(false)
 
   const { data, refetch } = useQuery({
     queryKey: ['session', id],
@@ -73,14 +75,24 @@ export default function SessionRoom() {
     return () => clearInterval(t)
   }, [])
 
-  // Camera / mic init
+  // Camera / mic init — setCameraReady(true) whether it succeeds or fails
+  // so the socket effect knows it's safe to emit join-room
   useEffect(() => {
     navigator.mediaDevices.getUserMedia({ video: true, audio: true })
       .then((stream) => {
         localStreamRef.current = stream
         if (localVideoRef.current) localVideoRef.current.srcObject = stream
+        // Add tracks to any peer connections that were created before camera was ready
+        Object.values(peerConnections.current).forEach((pc) => {
+          stream.getTracks().forEach((track) => {
+            if (!pc.getSenders().find((s) => s.track === track)) {
+              pc.addTrack(track, stream)
+            }
+          })
+        })
       })
       .catch(() => toast.error('Camera/microphone access denied'))
+      .finally(() => setCameraReady(true))
     return () => localStreamRef.current?.getTracks().forEach((t) => t.stop())
   }, [])
 
@@ -109,96 +121,123 @@ export default function SessionRoom() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages])
 
-  // Socket setup
+  // Socket setup — only runs after camera is ready (success or denied).
+  // Waiting for cameraReady guarantees localStreamRef.current is populated
+  // before join-room fires, so the first user-joined event always has a
+  // stream to offer. If stream was denied, createPeerConnection still works
+  // (audio/video tracks just won't be added).
   useEffect(() => {
-    const socket = getSocket()
-    if (!socket || !id) return
+    if (!cameraReady || !id) return
 
-    socket.emit('join-room', { roomId: id })
-    toast('You joined the room 🚀', { duration: 3000 })
+    // Poll until socket exists (it initialises asynchronously in SocketInit)
+    let socket = getSocket()
+    let retryTimer = null
+    let cleanupFn = null
 
-    socket.on('user-joined', ({ userId, name, avatar }) => {
-      setParticipants((p) => [...p.filter((x) => x.userId !== userId), { userId, name, avatar }])
-      toast(`${name} joined`, { icon: '👋', duration: 3000 })
+    const setup = (sock) => {
+      sock.emit('join-room', { roomId: id })
+      toast('You joined the room 🚀', { duration: 3000 })
 
-      // Initiate WebRTC offer to the new joiner
-      const stream = localStreamRef.current
-      if (stream) {
+      sock.on('user-joined', ({ userId, name, avatar }) => {
+        setParticipants((p) => [...p.filter((x) => x.userId !== userId), { userId, name, avatar }])
+        toast(`${name} joined`, { icon: '👋', duration: 3000 })
+
+        // Create PC unconditionally — no stream guard.
+        // createPeerConnection captures localStreamRef.current at call time;
+        // the camera effect also adds tracks retroactively if stream arrives later.
         const pc = createPeerConnection(userId)
         pc.createOffer()
           .then((offer) => pc.setLocalDescription(offer)
-            .then(() => socket.emit('offer', { roomId: id, offer, targetId: userId })))
+            .then(() => sock.emit('offer', { roomId: id, offer, targetId: userId })))
           .catch(() => {})
+      })
+
+      sock.on('user-left', ({ userId }) => {
+        setParticipants((p) => p.filter((x) => x.userId !== userId))
+        setRemoteStreams((s) => { const n = { ...s }; delete n[userId]; return n })
+        peerConnections.current[userId]?.close()
+        delete peerConnections.current[userId]
+      })
+
+      sock.on('chat-message', (msg) => setMessages((m) => [...m, msg]))
+
+      sock.on('hand-raised', ({ userId, name }) => {
+        setRaisedHands((h) => [...h.filter((x) => x !== userId), userId])
+        toast(`${name} raised their hand ✋`, { duration: 3000 })
+      })
+      sock.on('hand-lowered', ({ userId }) => setRaisedHands((h) => h.filter((x) => x !== userId)))
+
+      sock.on('session-ended', () => {
+        toast.error('Session ended by host')
+        setTimeout(() => navigate(`/sessions/${id}`), 2000)
+      })
+      sock.on('removed-from-room', ({ reason }) => {
+        toast.error(reason)
+        navigate(`/sessions/${id}`)
+      })
+
+      // WebRTC signaling
+      sock.on('offer', async ({ offer, from }) => {
+        const pc = createPeerConnection(from)
+        await pc.setRemoteDescription(new RTCSessionDescription(offer))
+        const answer = await pc.createAnswer()
+        await pc.setLocalDescription(answer)
+        sock.emit('answer', { roomId: id, answer, targetId: from })
+      })
+      sock.on('answer', async ({ answer, from }) => {
+        const pc = peerConnections.current[from]
+        if (pc) await pc.setRemoteDescription(new RTCSessionDescription(answer))
+      })
+      sock.on('ice-candidate', async ({ candidate, from }) => {
+        const pc = peerConnections.current[from]
+        if (pc) await pc.addIceCandidate(new RTCIceCandidate(candidate)).catch(() => {})
+      })
+
+      // Whiteboard
+      sock.on('whiteboard-draw', (data) => {
+        const canvas = canvasRef.current
+        if (!canvas) return
+        const ctx = canvas.getContext('2d')
+        ctx.beginPath()
+        ctx.strokeStyle = data.color
+        ctx.lineWidth   = data.size
+        ctx.lineCap     = 'round'
+        ctx.moveTo(data.x1, data.y1)
+        ctx.lineTo(data.x2, data.y2)
+        ctx.stroke()
+      })
+      sock.on('whiteboard-clear', () => {
+        const canvas = canvasRef.current
+        if (canvas) canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+      })
+
+      cleanupFn = () => {
+        sock.emit('leave-room', { roomId: id })
+        ;['user-joined','user-left','chat-message','hand-raised','hand-lowered',
+          'session-ended','removed-from-room','offer','answer','ice-candidate',
+          'whiteboard-draw','whiteboard-clear'].forEach((e) => sock.off(e))
+        Object.values(peerConnections.current).forEach((pc) => pc.close())
       }
-    })
+    }
 
-    socket.on('user-left', ({ userId }) => {
-      setParticipants((p) => p.filter((x) => x.userId !== userId))
-      setRemoteStreams((s) => { const n = { ...s }; delete n[userId]; return n })
-      peerConnections.current[userId]?.close()
-      delete peerConnections.current[userId]
-    })
-
-    socket.on('chat-message', (msg) => setMessages((m) => [...m, msg]))
-
-    socket.on('hand-raised', ({ userId, name }) => {
-      setRaisedHands((h) => [...h.filter((x) => x !== userId), userId])
-      toast(`${name} raised their hand ✋`, { duration: 3000 })
-    })
-    socket.on('hand-lowered', ({ userId }) => setRaisedHands((h) => h.filter((x) => x !== userId)))
-
-    socket.on('session-ended', () => {
-      toast.error('Session ended by host')
-      setTimeout(() => navigate(`/sessions/${id}`), 2000)
-    })
-    socket.on('removed-from-room', ({ reason }) => {
-      toast.error(reason)
-      navigate(`/sessions/${id}`)
-    })
-
-    // WebRTC signaling
-    socket.on('offer', async ({ offer, from }) => {
-      const pc = createPeerConnection(from)
-      await pc.setRemoteDescription(new RTCSessionDescription(offer))
-      const answer = await pc.createAnswer()
-      await pc.setLocalDescription(answer)
-      socket.emit('answer', { roomId: id, answer, targetId: from })
-    })
-    socket.on('answer', async ({ answer, from }) => {
-      const pc = peerConnections.current[from]
-      if (pc) await pc.setRemoteDescription(new RTCSessionDescription(answer))
-    })
-    socket.on('ice-candidate', async ({ candidate, from }) => {
-      const pc = peerConnections.current[from]
-      if (pc) await pc.addIceCandidate(new RTCIceCandidate(candidate)).catch(() => {})
-    })
-
-    // Whiteboard
-    socket.on('whiteboard-draw', (data) => {
-      const canvas = canvasRef.current
-      if (!canvas) return
-      const ctx = canvas.getContext('2d')
-      ctx.beginPath()
-      ctx.strokeStyle = data.color
-      ctx.lineWidth   = data.size
-      ctx.lineCap     = 'round'
-      ctx.moveTo(data.x1, data.y1)
-      ctx.lineTo(data.x2, data.y2)
-      ctx.stroke()
-    })
-    socket.on('whiteboard-clear', () => {
-      const canvas = canvasRef.current
-      if (canvas) canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
-    })
+    if (socket) {
+      setup(socket)
+    } else {
+      // Socket not initialised yet — retry every 150 ms
+      retryTimer = setInterval(() => {
+        socket = getSocket()
+        if (socket) {
+          clearInterval(retryTimer)
+          setup(socket)
+        }
+      }, 150)
+    }
 
     return () => {
-      socket.emit('leave-room', { roomId: id })
-      ;['user-joined','user-left','chat-message','hand-raised','hand-lowered',
-        'session-ended','removed-from-room','offer','answer','ice-candidate',
-        'whiteboard-draw','whiteboard-clear'].forEach((e) => socket.off(e))
-      Object.values(peerConnections.current).forEach((pc) => pc.close())
+      clearInterval(retryTimer)
+      cleanupFn?.()
     }
-  }, [id, createPeerConnection, navigate])
+  }, [id, cameraReady, createPeerConnection, navigate])
 
   // ─── Controls ────────────────────────────────────────────────────────────
 

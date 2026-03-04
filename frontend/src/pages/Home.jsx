@@ -83,18 +83,22 @@ export default function Home() {
       <section ref={heroRef} className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
         {/* Animated background orbs */}
         <motion.div className="absolute inset-0 pointer-events-none" style={{ y: heroY, opacity: heroOpacity }}>
+          {/* Saffron orb — top left */}
           <motion.div animate={{ scale: [1, 1.15, 1], rotate: [0, 10, 0] }} transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
             className="absolute top-1/4 left-1/5 w-[500px] h-[500px] rounded-full opacity-20 blur-3xl"
             style={{ background: 'radial-gradient(circle, #FF9933, transparent 70%)' }} />
+          {/* India Green orb — right */}
           <motion.div animate={{ scale: [1.1, 1, 1.1], rotate: [0, -8, 0] }} transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-            className="absolute top-1/3 right-1/4 w-[400px] h-[400px] rounded-full opacity-20 blur-3xl"
-            style={{ background: 'radial-gradient(circle, #FF9933, transparent 70%)' }} />
+            className="absolute top-1/3 right-1/4 w-[400px] h-[400px] rounded-full opacity-18 blur-3xl"
+            style={{ background: 'radial-gradient(circle, #138808, transparent 70%)' }} />
+          {/* White/cream orb — bottom centre (Ashoka white band) */}
           <motion.div animate={{ scale: [1, 1.2, 1], x: [0, 30, 0] }} transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
-            className="absolute bottom-1/3 left-1/3 w-[350px] h-[350px] rounded-full opacity-15 blur-3xl"
-            style={{ background: 'radial-gradient(circle, #FF9933, transparent 70%)' }} />
+            className="absolute bottom-1/3 left-1/3 w-[350px] h-[350px] rounded-full opacity-10 blur-3xl"
+            style={{ background: 'radial-gradient(circle, #FFFFFF, transparent 70%)' }} />
+          {/* Ashoka Navy orb — subtle depth */}
           <motion.div animate={{ scale: [1.05, 1, 1.05] }} transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
             className="absolute top-1/2 right-1/3 w-[300px] h-[300px] rounded-full opacity-15 blur-3xl"
-            style={{ background: 'radial-gradient(circle, #FFB347, transparent 70%)' }} />
+            style={{ background: 'radial-gradient(circle, #000080, transparent 70%)' }} />
           {/* Grid dots */}
           <div className="absolute inset-0 bg-grid-dark opacity-60" />
         </motion.div>
